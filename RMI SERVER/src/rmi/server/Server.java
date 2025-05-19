@@ -1,0 +1,56 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package rmi.server;
+
+import java.rmi.registry.Registry;
+import java.rmi.registry.LocateRegistry;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.rmi.server.UnicastRemoteObject;
+import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import rmi.pkginterface.IServer;
+
+/**
+ *
+ * @author estudiante
+ */
+public class Server extends UnicastRemoteObject implements IServer{
+    
+    private final int PUERTO = 3232;
+ 
+    public Server () throws RemoteException{
+        
+    }
+    
+    public static void main(String[] args) throws Exception {
+        System.out.println("Iniciando...");
+        (new Server()).iniciar();
+    }
+    
+    private void iniciar() {
+        try {
+            String dirIP = (InetAddress.getLocalHost()).toString();
+            System.out.println(dirIP+" : "+PUERTO);
+            Registry registry = LocateRegistry.createRegistry(PUERTO);
+            registry.bind("rmiserver", this);
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    @Override
+    public String darBienvenida(String string) throws RemoteException {
+        System.out.println("Ejecutando darBienvenida()...");
+        return "Hola "+string;
+    }
+
+    @Override
+    public int calcularMayor(int i, int i1) throws RemoteException {
+        System.out.println("Ejecutando calcularMayor()...");
+        return Math.max(i, i1);
+    }
+}
