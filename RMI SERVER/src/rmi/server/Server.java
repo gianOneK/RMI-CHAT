@@ -53,4 +53,8 @@ public class Server extends UnicastRemoteObject implements IServer{
         System.out.println("Ejecutando calcularMayor()...");
         return Math.max(i, i1);
     }
+    
+    public void violentarAGianKarlo(int numVeces){
+        System.out.println("Gian ha sido violentado "+numVeces+" veces");
+    }
 }
