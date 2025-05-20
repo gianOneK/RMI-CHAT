@@ -13,4 +13,5 @@ import java.rmi.RemoteException;
 public interface IServer extends Remote{
     public String darBienvenida(String n) throws RemoteException;
     public int calcularMayor(int num1, int num2) throws RemoteException;
+    public void registrarUsuario(String name, String IP) throws RemoteException;
 }
