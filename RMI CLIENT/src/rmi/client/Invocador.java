@@ -26,7 +26,8 @@ public class Invocador {
             String name = sc.next();
             String IP = sc.next();
             
-            objRemoto.registrarUsuario(name, IP);
+            System.out.println(objRemoto.registrarUsuario(name, IP));
+            
                     
             String saludo = objRemoto.darBienvenida("Juan Karlo");
             int num = objRemoto.calcularMayor(2, 10);

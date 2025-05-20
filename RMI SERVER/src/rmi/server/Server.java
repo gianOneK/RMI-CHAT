@@ -64,18 +64,18 @@ public class Server extends UnicastRemoteObject implements IServer{
     // REGISTRAR USUARIO
     
     @Override
-    public void registrarUsuario(String name, String IP) throws RemoteException{
+    public String registrarUsuario(String name, String IP) throws RemoteException{
         usuarios.add(new Usuario(name, IP));
         System.out.println("ola");
-        imprimirUsuarios();
+        return imprimirUsuarios();
     }
     
-    public void imprimirUsuarios(){
+    public String imprimirUsuarios(){
         String lista = "";
         for(Usuario u:usuarios){
             lista+=u.getName()+"\n";
         }
-        System.out.println(lista);
+        return lista;
     }
     
     
