@@ -71,7 +71,7 @@ public class Server extends UnicastRemoteObject implements IServer{
     }
     
     public String imprimirUsuarios(){
-        String lista = "Usuarios\n-------------------";
+        String lista = "Usuarios\n-------------------\n";
         for(Usuario u:usuarios){
             lista+=u.getName()+"\n";
         }
