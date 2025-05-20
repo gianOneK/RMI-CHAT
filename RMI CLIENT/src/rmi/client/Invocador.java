@@ -1,5 +1,6 @@
 package rmi.client;
 
+import java.net.InetAddress;
 import rmi.pkginterface.IServer;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -15,7 +16,8 @@ public class Invocador {
         this.name = name;
         Registry reg = LocateRegistry.getRegistry("192.168.254.91", 3232);
         this.server = (IServer) reg.lookup("rmiserver");
-        System.out.println(server.registrarUsuario(name, "127.0.0.1"));
+        String localHost = InetAddress.getLocalHost().getHostAddress();
+        System.out.println(server.registrarUsuario(name, localHost));
 
         // Inicia hilo de consulta de mensajes
         new Thread(this::pollMessages).start();
