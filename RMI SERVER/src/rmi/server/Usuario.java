@@ -1,40 +1,37 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package rmi.server;
 
-/**
- *
- * @author Kevin
- */
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+
 public class Usuario {
-    private String name;
-    private String IP;
+    private final String name;
+    private final String IP;
+    private final List<String> inbox = Collections.synchronizedList(new LinkedList<>());
 
     public Usuario(String name, String IP) {
         this.name = name;
         this.IP = IP;
     }
 
-    public Usuario() {
-        
-    }
-    
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getIP() {
         return IP;
     }
 
-    public void setIP(String IP) {
-        this.IP = IP;
+    public void addMessage(String msg) {
+        inbox.add(msg);
     }
-    
+
+    public List<String> fetchMessages() {
+        List<String> msgs;
+        synchronized (inbox) {
+            msgs = new LinkedList<>(inbox);
+            inbox.clear();
+        }
+        return msgs;
+    }
 }

@@ -1,82 +1,74 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+// Server.java
 package rmi.server;
 
-import java.rmi.registry.Registry;
-import java.rmi.registry.LocateRegistry;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.rmi.server.UnicastRemoteObject;
-import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import rmi.pkginterface.IServer;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
+import java.net.InetAddress;
+import java.rmi.RemoteException;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.List;
+import java.util.Map;
 
-/**
- *
- * @author estudiante
- */
-public class Server extends UnicastRemoteObject implements IServer{
-    
-    private final int PUERTO = 3232;
-    private ArrayList<Usuario> usuarios = new ArrayList<>();
- 
-    public Server () throws RemoteException{
-        
+public class Server extends UnicastRemoteObject implements IServer {
+    private static final int PUERTO = 3232;
+    private final Map<String, Usuario> usuarios = new ConcurrentHashMap<>();
+
+    protected Server() throws RemoteException {
+        super();
     }
-    
+
     public static void main(String[] args) throws Exception {
-        System.out.println("Iniciando...");
-        (new Server()).iniciar();
-    }
-    
-    private void iniciar() {
-        try {
-            String dirIP = (InetAddress.getLocalHost()).toString();
-            System.out.println(dirIP+" : "+PUERTO);
-            Registry registry = LocateRegistry.createRegistry(PUERTO);
-            registry.bind("rmiserver", this);
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-        }
+        Server srv = new Server();
+        Registry reg = LocateRegistry.createRegistry(PUERTO);
+        reg.bind("rmiserver", srv);
+        System.out.println("Servidor RMI listo en puerto " + PUERTO);
     }
 
     @Override
-    public String darBienvenida(String string) throws RemoteException {
-        System.out.println("Ejecutando darBienvenida()...");
-        return "Hola "+string;
-    }
-
-    @Override
-    public int calcularMayor(int i, int i1) throws RemoteException {
-        System.out.println("Ejecutando calcularMayor()...");
-        return Math.max(i, i1);
-    }
-    
-    public void violentarAGianKarlo(int numVeces){
-        System.out.println("Gian ha sido violentado "+numVeces+" veces");
-    }
-    
-    // REGISTRAR USUARIO
-    
-    @Override
-    public String registrarUsuario(String name, String IP) throws RemoteException{
-        usuarios.add(new Usuario(name, IP));
+    public synchronized String registrarUsuario(String name, String IP) throws RemoteException {
+        Usuario u = new Usuario(name, IP);
+        usuarios.put(name, u);
+        String notif = "Sistema: " + name + " se ha unido.";
+        usuarios.values().forEach(user -> user.addMessage(notif));
         return imprimirUsuarios();
     }
-    
-    public String imprimirUsuarios(){
-        String lista = "Usuarios:\n-------------------\n";
-        for(Usuario u:usuarios){
-            lista+=u.getName()+"\n";
-        }
-        lista+="-------------------";
-        return lista;
+
+    @Override
+    public int calcularMayor(int num1, int num2) throws RemoteException {
+        return Math.max(num1, num2);
     }
-    
-    
-    
+
+    @Override
+    public String darBienvenida(String n) throws RemoteException {
+        return "Hola " + n;
+    }
+
+    @Override
+    public void sendDirectMessage(String from, String to, String message) throws RemoteException {
+        Usuario dest = usuarios.get(to);
+        if (dest != null) {
+            dest.addMessage(from + " -> Tú: " + message);
+        }
+    }
+
+    @Override
+    public void sendGlobalMessage(String from, String message) throws RemoteException {
+        String msg = from + " (global): " + message;
+        usuarios.values().forEach(user -> user.addMessage(msg));
+    }
+
+    @Override
+    public List<String> fetchMessages(String name) throws RemoteException {
+        Usuario u = usuarios.get(name);
+        return u != null ? u.fetchMessages() : List.of();
+    }
+
+    private String imprimirUsuarios() {
+        StringBuilder sb = new StringBuilder("Usuarios:\n-------------------\n");
+        usuarios.keySet().forEach(k -> sb.append(k).append("\n"));
+        sb.append("-------------------");
+        return sb.toString();
+    }
 }

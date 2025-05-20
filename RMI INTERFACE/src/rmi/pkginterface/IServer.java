@@ -1,17 +1,14 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
- */
 package rmi.pkginterface;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-/**
- *
- * @author estudiante
- */
-public interface IServer extends Remote{
-    public String darBienvenida(String n) throws RemoteException;
-    public int calcularMayor(int num1, int num2) throws RemoteException;
-    public String registrarUsuario(String name, String IP) throws RemoteException;
-}
+import java.util.List;
+
+public interface IServer extends Remote {
+    String darBienvenida(String n) throws RemoteException;
+    int calcularMayor(int num1, int num2) throws RemoteException;
+    String registrarUsuario(String name, String IP) throws RemoteException;
+    void sendDirectMessage(String from, String to, String message) throws RemoteException;
+    void sendGlobalMessage(String from, String message) throws RemoteException;
+    List<String> fetchMessages(String name) throws RemoteException;
+}  
