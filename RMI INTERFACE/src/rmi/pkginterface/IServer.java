@@ -11,4 +11,5 @@ public interface IServer extends Remote {
     void sendDirectMessage(String from, String to, String message) throws RemoteException;
     void sendGlobalMessage(String from, String message) throws RemoteException;
     List<String> fetchMessages(String name) throws RemoteException;
+    void desconectarUsuario(String name) throws RemoteException;
 }  

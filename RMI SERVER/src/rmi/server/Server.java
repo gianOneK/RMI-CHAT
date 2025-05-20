@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Server extends UnicastRemoteObject implements IServer {
+
     private static final int PUERTO = 3232;
     private final Map<String, Usuario> usuarios = new ConcurrentHashMap<>();
 
@@ -71,4 +72,14 @@ public class Server extends UnicastRemoteObject implements IServer {
         sb.append("-------------------");
         return sb.toString();
     }
+
+    @Override
+    public synchronized void desconectarUsuario(String name) throws RemoteException {
+        Usuario removed = usuarios.remove(name);
+        if (removed != null) {
+            String notif = "Sistema: " + name + " se ha desconectado.";
+            usuarios.values().forEach(user -> user.addMessage(notif));
+        }
+    }
+
 }
