@@ -19,7 +19,7 @@ public class Invocador {
         try{
             Registry reg = LocateRegistry.getRegistry("localhost", 3232);
             IServer objRemoto = (IServer) reg.lookup("rmiserver");
-            
+            System.out.println("ola2");
             
             // REGISTRAR USUARIO
             Scanner sc = new Scanner(System.in);
@@ -28,7 +28,7 @@ public class Invocador {
             
             objRemoto.registrarUsuario(name, IP);
                     
-            String saludo = objRemoto.darBienvenida("Gian Karlo");
+            String saludo = objRemoto.darBienvenida("Juan Karlo");
             int num = objRemoto.calcularMayor(2, 10);
             
             

@@ -37,6 +37,7 @@ public class Server extends UnicastRemoteObject implements IServer{
         try {
             String dirIP = (InetAddress.getLocalHost()).toString();
             System.out.println(dirIP+" : "+PUERTO);
+            System.out.println("ola");
             Registry registry = LocateRegistry.createRegistry(PUERTO);
             registry.bind("rmiserver", this);
         } catch (Exception ex) {
