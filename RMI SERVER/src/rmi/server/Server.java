@@ -75,6 +75,7 @@ public class Server extends UnicastRemoteObject implements IServer{
         for(Usuario u:usuarios){
             lista+=u.getName()+"\n";
         }
+        System.out.println(lista);
     }
     
     
