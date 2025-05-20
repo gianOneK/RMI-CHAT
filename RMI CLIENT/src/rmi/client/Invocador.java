@@ -13,7 +13,7 @@ public class Invocador {
 
     public Invocador(String name) throws Exception {
         this.name = name;
-        Registry reg = LocateRegistry.getRegistry("localhost", 3232);
+        Registry reg = LocateRegistry.getRegistry("192.168.254.91", 3232);
         this.server = (IServer) reg.lookup("rmiserver");
         System.out.println(server.registrarUsuario(name, "127.0.0.1"));
 
