@@ -62,8 +62,10 @@ public class Server extends UnicastRemoteObject implements IServer{
     
     // REGISTRAR USUARIO
     
-    public void registrarUsuario(String name, String IP){
+    @Override
+    public void registrarUsuario(String name, String IP) throws RemoteException{
         usuarios.add(new Usuario(name, IP));
+        System.out.println("ola");
         imprimirUsuarios();
     }
     
