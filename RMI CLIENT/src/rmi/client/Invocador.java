@@ -23,8 +23,8 @@ public class Invocador {
             
             // REGISTRAR USUARIO
             Scanner sc = new Scanner(System.in);
-            String name = sc.next();
-            String IP = sc.next();
+            String name = sc.next("Inserte Nombre");
+            String IP = sc.next("Inserte IP");
             
             System.out.println(objRemoto.registrarUsuario(name, IP));
             

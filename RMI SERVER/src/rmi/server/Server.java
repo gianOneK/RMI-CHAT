@@ -71,10 +71,11 @@ public class Server extends UnicastRemoteObject implements IServer{
     }
     
     public String imprimirUsuarios(){
-        String lista = "";
+        String lista = "Usuarios\n-------------------";
         for(Usuario u:usuarios){
             lista+=u.getName()+"\n";
         }
+        lista+="-------------------";
         return lista;
     }
     
