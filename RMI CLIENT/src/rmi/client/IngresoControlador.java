@@ -8,7 +8,7 @@ import java.rmi.RemoteException;
 
 /**
  *
- * @author FABIAN FLOREZ
+ * @author juan llanos
  */
 public class IngresoControlador {
     
