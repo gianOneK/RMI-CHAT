@@ -4,42 +4,39 @@
  */
 package rmi.client;
 
-
 import java.rmi.registry.Registry;
 import java.rmi.registry.LocateRegistry;
 import java.util.Scanner;
 import rmi.pkginterface.IServer;
+
 /**
  *
  * @author estudiante
  */
 public class Invocador {
-    
+
     public static void main(String[] args) {
-        try{
+        try {
             Registry reg = LocateRegistry.getRegistry("localhost", 3232);
             IServer objRemoto = (IServer) reg.lookup("rmiserver");
-            System.out.println("ola2");
-            
+
             // REGISTRAR USUARIO
             Scanner sc = new Scanner(System.in);
             System.out.print("Inserte Nombre: ");
-            String name = sc.next();
-            System.out.println("");
-            System.out.println("Inserte IP: ");
-            String IP = sc.next();
-            
+            String name = sc.nextLine();
+            System.out.print("Inserte IP: ");
+            String IP = sc.nextLine();
+
+            // LISTAR USUARIO
             System.out.println(objRemoto.registrarUsuario(name, IP));
-            
-                    
+
             String saludo = objRemoto.darBienvenida("Juan Karlo");
             int num = objRemoto.calcularMayor(2, 10);
-            
-            
+
             System.out.println(saludo);
-            System.out.println("Número = "+ num);
-            
-        }catch(Exception e){
+            System.out.println("Número = " + num);
+
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }

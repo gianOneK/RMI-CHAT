@@ -37,7 +37,6 @@ public class Server extends UnicastRemoteObject implements IServer{
         try {
             String dirIP = (InetAddress.getLocalHost()).toString();
             System.out.println(dirIP+" : "+PUERTO);
-            System.out.println("ola");
             Registry registry = LocateRegistry.createRegistry(PUERTO);
             registry.bind("rmiserver", this);
         } catch (Exception ex) {
@@ -66,12 +65,11 @@ public class Server extends UnicastRemoteObject implements IServer{
     @Override
     public String registrarUsuario(String name, String IP) throws RemoteException{
         usuarios.add(new Usuario(name, IP));
-        System.out.println("ola");
         return imprimirUsuarios();
     }
     
     public String imprimirUsuarios(){
-        String lista = "Usuarios\n-------------------\n";
+        String lista = "Usuarios:\n-------------------\n";
         for(Usuario u:usuarios){
             lista+=u.getName()+"\n";
         }
