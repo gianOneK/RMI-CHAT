@@ -10,6 +10,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.rmi.server.UnicastRemoteObject;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import rmi.pkginterface.IServer;
@@ -21,6 +22,7 @@ import rmi.pkginterface.IServer;
 public class Server extends UnicastRemoteObject implements IServer{
     
     private final int PUERTO = 3232;
+    private ArrayList<Usuario> usuarios = new ArrayList<>();
  
     public Server () throws RemoteException{
         
@@ -57,4 +59,21 @@ public class Server extends UnicastRemoteObject implements IServer{
     public void violentarAGianKarlo(int numVeces){
         System.out.println("Gian ha sido violentado "+numVeces+" veces");
     }
+    
+    // REGISTRAR USUARIO
+    
+    public void registrarUsuario(String name, String IP){
+        usuarios.add(new Usuario(name, IP));
+        imprimirUsuarios();
+    }
+    
+    public void imprimirUsuarios(){
+        String lista = "";
+        for(Usuario u:usuarios){
+            lista+=u.getName()+"\n";
+        }
+    }
+    
+    
+    
 }
