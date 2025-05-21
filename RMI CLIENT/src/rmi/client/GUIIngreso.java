@@ -21,7 +21,7 @@ public class GUIIngreso extends javax.swing.JFrame {
     this.ingreso=ingreso;
     }
     
-    
+   
     /**
      * @return the btbIngresar
      */
