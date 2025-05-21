@@ -1,4 +1,4 @@
-// Server.java
+
 package rmi.server;
 
 import rmi.pkginterface.IServer;
@@ -7,6 +7,8 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.net.InetAddress;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,15 +37,11 @@ public class Server extends UnicastRemoteObject implements IServer {
         usuarios.values().forEach(user -> user.addMessage(notif));
         return imprimirUsuarios();
     }
-
+    
     @Override
-    public int calcularMayor(int num1, int num2) throws RemoteException {
-        return Math.max(num1, num2);
-    }
-
-    @Override
-    public String darBienvenida(String n) throws RemoteException {
-        return "Hola " + n;
+    public List<String> getConnectedUsers() throws RemoteException {
+        // Devuelve una copia inmutable de las claves (nombres de usuario)
+        return Collections.unmodifiableList(new ArrayList<>(usuarios.keySet()));
     }
 
     @Override
@@ -81,5 +79,10 @@ public class Server extends UnicastRemoteObject implements IServer {
             usuarios.values().forEach(user -> user.addMessage(notif));
         }
     }
+
+    
+    
+
+    
 
 }

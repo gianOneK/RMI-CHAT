@@ -14,14 +14,12 @@ import java.util.logging.Logger;
  */
 public class GUIIngreso extends javax.swing.JFrame {
 
-
     private IngresoControlador ingreso;
-    
-    public GUIIngreso(IngresoControlador ingreso){
-    this.ingreso=ingreso;
+
+    public GUIIngreso(IngresoControlador ingreso) {
+        this.ingreso = ingreso;
     }
-    
-   
+
     /**
      * @return the btbIngresar
      */
@@ -159,10 +157,10 @@ public class GUIIngreso extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                GUIIngreso v=new GUIIngreso();
-                IngresoControlador i=new IngresoControlador(v);
+                GUIIngreso v = new GUIIngreso();
+                IngresoControlador i = new IngresoControlador(v);
                 v.setIngreso(i);
-               v.setVisible(true);
+                v.setVisible(true);
             }
         });
     }

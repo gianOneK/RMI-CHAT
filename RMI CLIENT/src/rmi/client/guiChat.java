@@ -6,7 +6,10 @@ package rmi.client;
 
 import java.awt.Component;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
@@ -23,16 +26,42 @@ public class guiChat extends javax.swing.JFrame {
     private DefaultListModel<String> userModel;
     private Map<String, JPanel> chats = new HashMap<>();
 
+    private ChatControlador controlador;
+    private String nombreUsuario;
+
     /**
      * Creates new form guiChat
      */
-    public guiChat() {
-        initComponents();
+    public guiChat(String nombreUsuario) {
+        try {
+            initComponents();
+            controlador = new ChatControlador(this, nombreUsuario);
+
+            // MEnsajes
+            JLabel mensaje = new JLabel("Hola, soy yo!" + " : *YO* ");
+            JLabel mensaje1 = new JLabel("Hol2, soy yo!");
+            mensaje.setAlignmentX(Component.RIGHT_ALIGNMENT);
+            mensaje1.setAlignmentX(Component.RIGHT_ALIGNMENT);// Alineado a la derecha (tú)
+//        chatPanel.add(mensaje);
+//        
+//        chatPanel.add(mensaje1);
+            chatPanel.revalidate();
+            chatPanel.repaint();
+
+            scrollChat.getVerticalScrollBar().setValue(scrollChat.getVerticalScrollBar().getMaximum());
+        } catch (Exception ex) {
+            Logger.getLogger(guiChat.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void actulizarListado(List<String> usuarios) {
+
         userModel = new DefaultListModel<>();
-        
-        userModel.add(0, "PEDRO");
-        userModel.add(1, "Juan");
-        
+
+        for (String usuario : usuarios) {
+            userModel.addElement(usuario);
+        }
+
         listPersonasOnline.setModel(userModel);
 
         listPersonasOnline.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -42,36 +71,22 @@ public class guiChat extends javax.swing.JFrame {
                 mostrarChatDe(selectedUser);
             }
         });
-        // MEnsajes
-        
-        JLabel mensaje = new JLabel("Hola, soy yo!" + " : *YO* ");
-        JLabel mensaje1 = new JLabel("Hol2, soy yo!");
-        mensaje.setAlignmentX(Component.RIGHT_ALIGNMENT);
-        mensaje1.setAlignmentX(Component.RIGHT_ALIGNMENT);// Alineado a la derecha (tú)
-//        chatPanel.add(mensaje);
-//        
-//        chatPanel.add(mensaje1);
+
+    }
+
+    private void mostrarChatDe(String usuario) {
+        chatPanel.removeAll(); // limpiar panel
+
+        JPanel historial = chats.get(usuario);
+        if (historial != null) {
+            for (Component c : historial.getComponents()) {
+                chatPanel.add(c);
+            }
+        }
+
         chatPanel.revalidate();
         chatPanel.repaint();
-
-        scrollChat.getVerticalScrollBar().setValue(scrollChat.getVerticalScrollBar().getMaximum());
     }
-    
-    
-    
-    private void mostrarChatDe(String usuario) {
-    chatPanel.removeAll(); // limpiar panel
-
-    JPanel historial = chats.get(usuario);
-    if (historial != null) {
-        for (Component c : historial.getComponents()) {
-            chatPanel.add(c);
-        }
-    }
-
-    chatPanel.revalidate();
-    chatPanel.repaint();
-}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -201,7 +216,8 @@ public class guiChat extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new guiChat().setVisible(true);
+                new guiChat("Usuario Prueba").setVisible(true);
+
             }
         });
     }
@@ -216,4 +232,19 @@ public class guiChat extends javax.swing.JFrame {
     private javax.swing.JList<String> listPersonasOnline;
     private javax.swing.JScrollPane scrollChat;
     // End of variables declaration//GEN-END:variables
+
+    /**
+     * @return the nombreUsuario
+     */
+    public String getNombreUsuario() {
+        return nombreUsuario;
+    }
+
+    /**
+     * @param nombreUsuario the nombreUsuario to set
+     */
+    public void setNombreUsuario(String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
+    }
+
 }
