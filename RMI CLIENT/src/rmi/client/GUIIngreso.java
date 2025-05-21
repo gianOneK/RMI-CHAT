@@ -14,7 +14,7 @@ import java.util.logging.Logger;
  */
 public class GUIIngreso extends javax.swing.JFrame {
 
- 
+
     private IngresoControlador ingreso;
     
     public GUIIngreso(IngresoControlador ingreso){
