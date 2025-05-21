@@ -16,9 +16,10 @@ public class IngresoControlador {
    
     public IngresoControlador(GUIIngreso vista){
     this.vista=vista;
+    
     }
     
-   
+  
     
     
     
