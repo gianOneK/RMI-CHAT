@@ -50,6 +50,7 @@ public class Server extends UnicastRemoteObject implements IServer {
         if (dest != null) {
             dest.addMessage(from + " -> Tú: " + message);
         }
+        
     }
 
     @Override
