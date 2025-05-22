@@ -40,11 +40,10 @@ public class guiChat extends javax.swing.JFrame {
             // MEnsajes
             JLabel mensaje = new JLabel("Hola, soy yo!" + " : *YO* ");
             JLabel mensaje1 = new JLabel("Hol2, soy yo!");
-            mensaje.setAlignmentX(Component.RIGHT_ALIGNMENT);
-            mensaje1.setAlignmentX(Component.RIGHT_ALIGNMENT);// Alineado a la derecha (tú)
-//        chatPanel.add(mensaje);
-//        
-//        chatPanel.add(mensaje1);
+            mensaje1.setAlignmentX(Component.RIGHT_ALIGNMENT);
+            mensaje.setAlignmentX(Component.LEFT_ALIGNMENT);// Alineado a la derecha (tú)
+            chatPanel.add(mensaje);
+            chatPanel.add(mensaje1);
             chatPanel.revalidate();
             chatPanel.repaint();
 

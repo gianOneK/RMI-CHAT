@@ -15,9 +15,17 @@ public class Invocador {
 
     private final IServer server;
     private final String name;
-   
+    private static Invocador instancia;
 
-    public Invocador(String name) throws Exception {
+    public static synchronized Invocador getInstance(String name) throws Exception {
+
+        if (instancia == null) {
+            instancia = new Invocador(name);
+        }
+        return instancia;
+    }
+
+    private Invocador(String name) throws Exception {
         this.name = name;
         Registry reg = LocateRegistry.getRegistry("LocalHost", 3232);
         this.server = (IServer) reg.lookup("rmiserver");
@@ -49,15 +57,13 @@ public class Invocador {
 //            }
 //        }
     }
-    
-   public List<String> getConnectedUsers() throws RemoteException {
-       
-            // Llama al método remoto del servidor para obtener la lista
-            return server.getConnectedUsers();
-      
-   }
-           
-    
+
+    public List<String> getConnectedUsers() throws RemoteException {
+
+        // Llama al método remoto del servidor para obtener la lista
+        return server.getConnectedUsers();
+
+    }
 
     private void pollMessages() {
         try {
@@ -88,4 +94,9 @@ public class Invocador {
             e.printStackTrace();
         }
     }
+
+    public String getName() {
+        return name;
+    }
+
 }

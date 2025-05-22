@@ -41,7 +41,7 @@ public class Server extends UnicastRemoteObject implements IServer {
     @Override
     public List<String> getConnectedUsers() throws RemoteException {
         // Devuelve una copia inmutable de las claves (nombres de usuario)
-        return Collections.unmodifiableList(new ArrayList<>(usuarios.keySet()));
+        return new ArrayList<>(usuarios.keySet());
     }
 
     @Override

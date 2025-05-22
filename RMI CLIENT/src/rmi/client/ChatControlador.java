@@ -5,6 +5,8 @@
 package rmi.client;
 
 import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -14,18 +16,21 @@ public class ChatControlador {
 
     private guiChat vistaChat;
     private Invocador fachada;
+    private String nombrecito;
 
     public ChatControlador(guiChat vistaChat, String nombreUsuario) throws Exception {
         this.vistaChat = vistaChat;
-        this.fachada = new Invocador(nombreUsuario);
-        
-        
-        
+        this.fachada = Invocador.getInstance(nombreUsuario);
+        this.nombrecito = nombreUsuario;
         actualizarListadoUsuarios();
+
     }
 
-    public void actualizarListadoUsuarios() throws RemoteException {
-        vistaChat.actulizarListado(fachada.getConnectedUsers());
+    private void actualizarListadoUsuarios() throws RemoteException {
+
+        ThreadListadoUsuario actualizar = new ThreadListadoUsuario(vistaChat, nombrecito);
+        actualizar.start();
+
     }
 
 }
