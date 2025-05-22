@@ -13,20 +13,20 @@ import java.util.logging.Logger;
  *
  * @author estudiante
  */
-public class ThreadListadoUsuario extends Thread {
+public class ThreadChatListUsuarios extends Thread {
 
-    private guiChat vista;
-    private Invocador fachada;
+    private ChatGUI vista;
+    private Cliente fachada;
 
     private List<String> usuarios;
 
-    public ThreadListadoUsuario(guiChat vista, String usuario) {
+    public ThreadChatListUsuarios(ChatGUI vista) {
 
         try {
             this.vista = vista;
-            fachada = Invocador.getInstance(usuario);
+            this.fachada = Cliente.getInstance();
         } catch (Exception ex) {
-            Logger.getLogger(ThreadListadoUsuario.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ThreadChatListUsuarios.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -38,9 +38,9 @@ public class ThreadListadoUsuario extends Thread {
                 vista.actulizarListado(usuarios);
                 Thread.sleep(1000);
             } catch (InterruptedException ex) {
-                Logger.getLogger(ThreadListadoUsuario.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ThreadChatListUsuarios.class.getName()).log(Level.SEVERE, null, ex);
             } catch (RemoteException ex) {
-                Logger.getLogger(ThreadListadoUsuario.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ThreadChatListUsuarios.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 

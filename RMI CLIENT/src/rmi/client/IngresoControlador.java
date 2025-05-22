@@ -12,14 +12,14 @@ import java.rmi.RemoteException;
  */
 public class IngresoControlador {
 
-    private GUIIngreso vista;
+    private IngresoGUI vista;
 
-    public IngresoControlador(GUIIngreso vista) {
+    public IngresoControlador(IngresoGUI vista) {
         this.vista = vista;
 
     }
 
-    public void ingresarServer() throws RemoteException {
+    public void ingresarServer() throws RemoteException, Exception {
 
         String nombre = vista.getTxtNombre().getText();
 
@@ -28,8 +28,8 @@ public class IngresoControlador {
             System.out.println("No hay un nombre escrito");
 
         } else {
-
-            generarGUI(nombre);
+            Cliente.getInstance().setName(nombre);
+            generarGUI();
             limpiar();
         }
     }
@@ -38,10 +38,9 @@ public class IngresoControlador {
         vista.getTxtNombre().setText("");
     }
 
-    public void generarGUI(String nombre) throws RemoteException {
-        guiChat chat = new guiChat(nombre);
-        System.out.println("Nombre: " + nombre);
-        chat.setNombreUsuario(nombre);
+    public void generarGUI() throws RemoteException, Exception {
+        ChatGUI chat = new ChatGUI();
+        System.out.println("Nombre: " + Cliente.getInstance().getName());
         vista.setVisible(false);
         chat.setVisible(true);
 

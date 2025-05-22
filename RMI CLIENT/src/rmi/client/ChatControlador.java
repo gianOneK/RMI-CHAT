@@ -14,21 +14,18 @@ import java.util.logging.Logger;
  */
 public class ChatControlador {
 
-    private guiChat vistaChat;
-    private Invocador fachada;
-    private String nombrecito;
+    private ChatGUI vistaChat;
+    private Cliente fachada = Cliente.getInstance();
 
-    public ChatControlador(guiChat vistaChat, String nombreUsuario) throws Exception {
+    public ChatControlador(ChatGUI vistaChat) throws Exception {
         this.vistaChat = vistaChat;
-        this.fachada = Invocador.getInstance(nombreUsuario);
-        this.nombrecito = nombreUsuario;
         actualizarListadoUsuarios();
 
     }
 
     private void actualizarListadoUsuarios() throws RemoteException {
 
-        ThreadListadoUsuario actualizar = new ThreadListadoUsuario(vistaChat, nombrecito);
+        ThreadChatListUsuarios actualizar = new ThreadChatListUsuarios(vistaChat);
         actualizar.start();
 
     }

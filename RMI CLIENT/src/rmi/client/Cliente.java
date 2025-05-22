@@ -11,21 +11,20 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Invocador {
+public class Cliente {
 
     private final IServer server;
-    private final String name;
-    private static Invocador instancia;
+    private String name;
+    private static Cliente instancia;
 
-    public static synchronized Invocador getInstance(String name) throws Exception {
+    public static synchronized Cliente getInstance() throws Exception {
         if (instancia == null) {
-            instancia = new Invocador(name); // Crea la instancia solo si no existe
+            instancia = new Cliente(); // Crea la instancia solo si no existe
         }
         return instancia;
     }
 
-    private Invocador(String name) throws Exception {
-        this.name = name;
+    private Cliente() throws Exception {
         Registry reg = LocateRegistry.getRegistry("LocalHost", 3232);
         this.server = (IServer) reg.lookup("rmiserver");
         String localHost = InetAddress.getLocalHost().getHostAddress();
@@ -84,18 +83,12 @@ public class Invocador {
 
     }
 
-    public static void main(String[] args) {
-        try {
-            System.out.print("Tu nombre: ");
-            String name = new Scanner(System.in).nextLine();
-            new Invocador(name);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public String getName() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+    
 }

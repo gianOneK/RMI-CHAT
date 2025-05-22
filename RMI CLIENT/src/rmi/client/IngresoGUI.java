@@ -12,11 +12,11 @@ import java.util.logging.Logger;
  *
  * @author juan llanos
  */
-public class GUIIngreso extends javax.swing.JFrame {
+public class IngresoGUI extends javax.swing.JFrame {
 
     private IngresoControlador ingreso;
 
-    public GUIIngreso(IngresoControlador ingreso) {
+    public IngresoGUI(IngresoControlador ingreso) {
         this.ingreso = ingreso;
     }
 
@@ -51,7 +51,7 @@ public class GUIIngreso extends javax.swing.JFrame {
     /**
      * Creates new form GUIIngreso
      */
-    public GUIIngreso() {
+    public IngresoGUI() {
         initComponents();
     }
 
@@ -123,7 +123,9 @@ public class GUIIngreso extends javax.swing.JFrame {
         try {
             ingreso.ingresarServer();
         } catch (RemoteException ex) {
-            Logger.getLogger(GUIIngreso.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(IngresoGUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(IngresoGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btbIngresarActionPerformed
 
@@ -144,20 +146,21 @@ public class GUIIngreso extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GUIIngreso.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(IngresoGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GUIIngreso.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(IngresoGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GUIIngreso.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(IngresoGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GUIIngreso.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(IngresoGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                GUIIngreso v = new GUIIngreso();
+                IngresoGUI v = new IngresoGUI();
                 IngresoControlador i = new IngresoControlador(v);
                 v.setIngreso(i);
                 v.setVisible(true);
