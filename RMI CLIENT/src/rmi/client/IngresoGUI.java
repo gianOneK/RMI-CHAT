@@ -14,10 +14,11 @@ import java.util.logging.Logger;
  */
 public class IngresoGUI extends javax.swing.JFrame {
 
-    private IngresoControlador ingreso;
+    private IngresoControlador controlador;
 
-    public IngresoGUI(IngresoControlador ingreso) {
-        this.ingreso = ingreso;
+    public IngresoGUI() {
+        this.controlador = new IngresoControlador(this);
+        initComponents();
     }
 
     /**
@@ -50,10 +51,6 @@ public class IngresoGUI extends javax.swing.JFrame {
 
     /**
      * Creates new form GUIIngreso
-     */
-    public IngresoGUI() {
-        initComponents();
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -121,7 +118,7 @@ public class IngresoGUI extends javax.swing.JFrame {
 
     private void btbIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btbIngresarActionPerformed
         try {
-            ingreso.ingresarServer();
+            controlador.ingresarServer();
         } catch (RemoteException ex) {
             Logger.getLogger(IngresoGUI.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
@@ -161,8 +158,6 @@ public class IngresoGUI extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 IngresoGUI v = new IngresoGUI();
-                IngresoControlador i = new IngresoControlador(v);
-                v.setIngreso(i);
                 v.setVisible(true);
             }
         });
@@ -179,6 +174,6 @@ public class IngresoGUI extends javax.swing.JFrame {
      * @param ingreso the ingreso to set
      */
     public void setIngreso(IngresoControlador ingreso) {
-        this.ingreso = ingreso;
+        this.controlador = ingreso;
     }
 }

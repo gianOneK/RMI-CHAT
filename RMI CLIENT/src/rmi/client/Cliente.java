@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 
 public class Cliente {
 
-    private final IServer server;
+    private IServer server;
     private String name;
     private static Cliente instancia;
 
@@ -23,8 +23,13 @@ public class Cliente {
         }
         return instancia;
     }
-
-    private Cliente() throws Exception {
+    
+    
+    private Cliente(){
+        
+    }
+    
+    public void register()  throws Exception {
         Registry reg = LocateRegistry.getRegistry("LocalHost", 3232);
         this.server = (IServer) reg.lookup("rmiserver");
         String localHost = InetAddress.getLocalHost().getHostAddress();
@@ -55,6 +60,7 @@ public class Cliente {
 //            }
 //        }
     }
+
 
     public List<String> getConnectedUsers() throws RemoteException {
 

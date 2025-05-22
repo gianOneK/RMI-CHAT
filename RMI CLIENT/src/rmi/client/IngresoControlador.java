@@ -29,6 +29,7 @@ public class IngresoControlador {
 
         } else {
             Cliente.getInstance().setName(nombre);
+            Cliente.getInstance().register();
             generarGUI();
             limpiar();
         }
