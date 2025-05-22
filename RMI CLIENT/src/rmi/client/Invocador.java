@@ -18,9 +18,8 @@ public class Invocador {
     private static Invocador instancia;
 
     public static synchronized Invocador getInstance(String name) throws Exception {
-
         if (instancia == null) {
-            instancia = new Invocador(name);
+            instancia = new Invocador(name); // Crea la instancia solo si no existe
         }
         return instancia;
     }
