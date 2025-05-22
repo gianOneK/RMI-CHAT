@@ -2,6 +2,7 @@ package rmi.pkginterface;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +14,7 @@ public interface IServer extends Remote{
 
     void sendGlobalMessage(String from, String message) throws RemoteException;
 
-    List<String> fetchMessages(String name) throws RemoteException;
+    Map<String, ArrayList<String[]>> fetchMessages(String name) throws RemoteException;
 
     void desconectarUsuario(String name) throws RemoteException;
     

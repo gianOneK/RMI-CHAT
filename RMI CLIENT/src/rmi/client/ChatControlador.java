@@ -23,11 +23,14 @@ public class ChatControlador {
 
     }
 
-    private void actualizarListadoUsuarios() throws RemoteException {
+    private void actualizarChats() throws RemoteException {
+        ThreadChatActualizar actualizar = new ThreadChatActualizar(vistaChat);
+        actualizar.start();
+    }
 
+    private void actualizarListadoUsuarios() throws RemoteException {
         ThreadChatListUsuarios actualizar = new ThreadChatListUsuarios(vistaChat);
         actualizar.start();
-
     }
 
 }

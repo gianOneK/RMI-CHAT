@@ -7,6 +7,7 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.net.InetAddress;
 import java.rmi.RemoteException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.concurrent.ConcurrentHashMap;
@@ -34,7 +35,7 @@ public class Server extends UnicastRemoteObject implements IServer {
         Usuario u = new Usuario(name, IP);
         usuarios.put(name, u);
         String notif = "Sistema: " + name + " se ha unido.";
-        usuarios.values().forEach(user -> user.addMessage(notif));
+        //usuarios.values().forEach(user -> user.addMessage(notif));
         return imprimirUsuarios();
     }
     
@@ -46,23 +47,24 @@ public class Server extends UnicastRemoteObject implements IServer {
 
     @Override
     public void sendDirectMessage(String from, String to, String message) throws RemoteException {
-        Usuario dest = usuarios.get(to);
-        if (dest != null) {
-            dest.addMessage(from + " -> Tú: " + message);
-        }
-        
+        Usuario destinatario = usuarios.get(to);
+        Usuario remitente = usuarios.get(from);
+        if (destinatario != null) {
+            remitente.sendMessage(to, from, message, LocalDateTime.now().toString());
+            destinatario.sendMessage(from, from, message, LocalDateTime.now().toString());          
+        }      
     }
 
     @Override
     public void sendGlobalMessage(String from, String message) throws RemoteException {
         String msg = from + " (global): " + message;
-        usuarios.values().forEach(user -> user.addMessage(msg));
+        //usuarios.values().forEach(user -> user.addMessage(msg));
     }
 
     @Override
-    public List<String> fetchMessages(String name) throws RemoteException {
+    public Map<String, ArrayList<String[]>> fetchMessages(String name) throws RemoteException {
         Usuario u = usuarios.get(name);
-        return u != null ? u.fetchMessages() : List.of();
+        return u != null ? u.fetchMessages() : Map.of();
     }
 
     private String imprimirUsuarios() {
@@ -77,7 +79,7 @@ public class Server extends UnicastRemoteObject implements IServer {
         Usuario removed = usuarios.remove(name);
         if (removed != null) {
             String notif = "Sistema: " + name + " se ha desconectado.";
-            usuarios.values().forEach(user -> user.addMessage(notif));
+            //usuarios.values().forEach(user -> user.addMessage(notif));
         }
     }
 

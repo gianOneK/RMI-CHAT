@@ -12,18 +12,37 @@ public class Usuario {
 
     private final String name;
     private final String IP;
-    private final List<String> inbox = Collections.synchronizedList(new LinkedList<>());
-    private final Map<String, ArrayList<Message>> mensajes = new HashMap<>();
+    private boolean actualizado;
+    private final Map<String, ArrayList<String[]>> cola = new HashMap<>();
+    private final Map<String, ArrayList<String[]>> mensajes = new HashMap<>();
 
     public Usuario(String name, String IP) {
         this.name = name;
         this.IP = IP;
     }
 
-    public void saveMessage(String contacto, String remitente, String msg, LocalDateTime time) {
-        Message mensaje = new Message(remitente, msg, time);
+    public void saveMessage(String contacto, String remitente, String msg, String time) {
+        String[] mensaje = {remitente, msg, time};
         mensajes.putIfAbsent(contacto, new ArrayList<>());
         mensajes.get(contacto).add(mensaje);
+    }
+
+    public void sendMessage(String contacto, String remitente, String msg, String time) {
+        String[] mensaje = {remitente, msg, time};
+        cola.putIfAbsent(contacto, new ArrayList<>());
+        cola.get(contacto).add(mensaje);
+    }
+    
+    public void loadMessages(){
+        for(String c: cola.keySet()){
+            for(String[] mensaje: cola.get(c)){
+                String remitente = mensaje[0];
+                String msg = mensaje[1];
+                String time = mensaje[2];
+                saveMessage(c, remitente, msg, time);
+            }
+        }
+        cola.clear();
     }
 
     public String getName() {
@@ -34,15 +53,11 @@ public class Usuario {
         return IP;
     }
 
-    public void addMessage(String msg) {
-        inbox.add(msg);
-    }
-
-    public List<String> fetchMessages() {
-        List<String> msgs;
-        synchronized (inbox) {
-            msgs = new LinkedList<>(inbox);
-            inbox.clear();
+    public Map<String, ArrayList<String[]>> fetchMessages() {
+        Map<String, ArrayList<String[]>> msgs;
+        synchronized (cola) {
+            msgs = new HashMap<>(cola);
+            loadMessages();
         }
         return msgs;
     }

@@ -5,6 +5,8 @@ import java.rmi.RemoteException;
 import rmi.pkginterface.IServer;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -16,6 +18,7 @@ public class Cliente {
     private IServer server;
     private String name;
     private static Cliente instancia;
+    private Map<String, ArrayList<String[]>> mensajes = new HashMap();
 
     public static synchronized Cliente getInstance() throws Exception {
         if (instancia == null) {
@@ -23,20 +26,18 @@ public class Cliente {
         }
         return instancia;
     }
-    
-    
-    private Cliente(){
-        
+
+    private Cliente() {
+
     }
-    
-    public void register()  throws Exception {
+
+    public void register() throws Exception {
         Registry reg = LocateRegistry.getRegistry("LocalHost", 3232);
         this.server = (IServer) reg.lookup("rmiserver");
         String localHost = InetAddress.getLocalHost().getHostAddress();
         System.out.println(server.registrarUsuario(name, localHost));
 
         // Inicia hilo de consulta de mensajes
-        new Thread(this::pollMessages).start();
 
 //        // Bucle de entrada de usuario
 //        Scanner sc = new Scanner(System.in);
@@ -61,7 +62,6 @@ public class Cliente {
 //        }
     }
 
-
     public List<String> getConnectedUsers() throws RemoteException {
 
         // Llama al método remoto del servidor para obtener la lista
@@ -69,24 +69,13 @@ public class Cliente {
 
     }
 
-    private void pollMessages() {
+    public Map<String, ArrayList<String[]>> fetchMessages() {
         try {
-            while (true) {
-                List<String> msgs = server.fetchMessages(name);
-                for (String m : msgs) {
-                    System.out.println(m);
-                }
-                Thread.sleep(1000);
-            }
-        } catch (Exception e) {
-            System.out.println("Se perdió conexión con el servidor. Cerrando cliente...");
-            try {
-                server.desconectarUsuario(name); // intento de limpiar si es posible
-            } catch (Exception ignored) {
-            }
-            System.exit(1);
+            return server.fetchMessages(name);
+        } catch (RemoteException ex) {
+            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        return null;
     }
 
     public String getName() {
@@ -96,5 +85,5 @@ public class Cliente {
     public void setName(String name) {
         this.name = name;
     }
-    
+
 }
