@@ -1,4 +1,3 @@
-
 package rmi.server;
 
 import rmi.pkginterface.IServer;
@@ -18,9 +17,11 @@ public class Server extends UnicastRemoteObject implements IServer {
 
     private static final int PUERTO = 3232;
     private final Map<String, Usuario> usuarios = new ConcurrentHashMap<>();
+    private final Map<String, Long> ultimoLatido = new ConcurrentHashMap<>();
 
     protected Server() throws RemoteException {
         super();
+        iniciarVerificador();
     }
 
     public static void main(String[] args) throws Exception {
@@ -28,6 +29,31 @@ public class Server extends UnicastRemoteObject implements IServer {
         Registry reg = LocateRegistry.createRegistry(PUERTO);
         reg.bind("rmiserver", srv);
         System.out.println("Servidor RMI listo en puerto " + PUERTO);
+    }
+
+    private void iniciarVerificador() {
+        new Thread(() -> {
+            while (true) {
+                long ahora = System.currentTimeMillis();
+                for (String usuario : new ArrayList<>(usuarios.keySet())) {
+                    Long ultimo = ultimoLatido.getOrDefault(usuario, 0L);
+                    if (ahora - ultimo > 2000) { // 
+                        System.out.println("Desconectando por inactividad a: " + usuario);
+                        try {
+                            desconectarUsuario(usuario);
+                        } catch (RemoteException e) {
+                            e.printStackTrace();
+                        }
+                        ultimoLatido.remove(usuario);
+                    }
+                }
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     @Override
@@ -38,7 +64,7 @@ public class Server extends UnicastRemoteObject implements IServer {
         //usuarios.values().forEach(user -> user.addMessage(notif));
         return imprimirUsuarios();
     }
-    
+
     @Override
     public List<String> getConnectedUsers() throws RemoteException {
         // Devuelve una copia inmutable de las claves (nombres de usuario)
@@ -51,8 +77,8 @@ public class Server extends UnicastRemoteObject implements IServer {
         Usuario remitente = usuarios.get(from);
         if (destinatario != null) {
             remitente.sendMessage(to, from, message, LocalDateTime.now().toString());
-            destinatario.sendMessage(from, from, message, LocalDateTime.now().toString());          
-        }      
+            destinatario.sendMessage(from, from, message, LocalDateTime.now().toString());
+        }
     }
 
     @Override
@@ -83,9 +109,12 @@ public class Server extends UnicastRemoteObject implements IServer {
         }
     }
 
-    
-    
-
-    
+    @Override
+    public void latido(String username) throws RemoteException {
+        if (usuarios.containsKey(username)) {
+            ultimoLatido.put(username, System.currentTimeMillis());
+            // Opcional: System.out.println("Ping recibido de " + username);
+        }
+    }
 
 }

@@ -30,6 +30,11 @@ public class Cliente {
     private Cliente() {
 
     }
+    public void latidoAlServidor() throws RemoteException {
+    if (server != null && name != null) {
+        server.latido(name);
+    }
+}
 
     public void register() throws Exception {
         Registry reg = LocateRegistry.getRegistry("LocalHost", 3232);
@@ -80,7 +85,7 @@ public class Cliente {
 
     public void desconectarUsuario()throws RemoteException{
     server.desconectarUsuario(name);
-     System.exit(0);
+    System.exit(0);
     }
     
     
