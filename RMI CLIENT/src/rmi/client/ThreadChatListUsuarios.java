@@ -17,6 +17,7 @@ public class ThreadChatListUsuarios extends Thread {
 
     private ChatGUI vista;
     private Cliente fachada;
+    private String nombre;
 
     private List<String> usuarios;
 
@@ -25,6 +26,7 @@ public class ThreadChatListUsuarios extends Thread {
         try {
             this.vista = vista;
             this.fachada = Cliente.getInstance();
+            this.nombre = fachada.getName();
         } catch (Exception ex) {
             Logger.getLogger(ThreadChatListUsuarios.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -35,6 +37,7 @@ public class ThreadChatListUsuarios extends Thread {
         while (true) {
             try {
                 this.usuarios = fachada.getConnectedUsers();
+                usuarios.remove(nombre);
                 vista.actulizarListado(usuarios);
                 Thread.sleep(1000);
             } catch (InterruptedException ex) {
