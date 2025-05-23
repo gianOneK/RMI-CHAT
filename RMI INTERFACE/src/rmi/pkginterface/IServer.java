@@ -20,4 +20,6 @@ public interface IServer extends Remote{
     
     List<String> getConnectedUsers() throws RemoteException ;
     
+    void latido(String username) throws RemoteException;
+    
 }

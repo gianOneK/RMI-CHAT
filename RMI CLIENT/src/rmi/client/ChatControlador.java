@@ -16,11 +16,20 @@ public class ChatControlador {
 
     private ChatGUI vistaChat;
     private Cliente fachada = Cliente.getInstance();
+    private ThreadLatidosCliente hiloPing;
 
     public ChatControlador(ChatGUI vistaChat) throws Exception {
         this.vistaChat = vistaChat;
+       
+        actualizarChats();
         actualizarListadoUsuarios();
-          vistaChat.getBtbSalir().addActionListener(e ->{
+
+        // Inicia el hilo de ping para mantener al usuario "vivo"
+        hiloPing = new ThreadLatidosCliente(fachada.getName());
+        hiloPing.start();
+
+      
+        vistaChat.getBtbSalir().addActionListener(e -> {
             try {
                 desconectarUsuario();
             } catch (Exception ex) {
@@ -38,10 +47,10 @@ public class ChatControlador {
         ThreadChatListUsuarios actualizar = new ThreadChatListUsuarios(vistaChat);
         actualizar.start();
     }
-     
-    public void desconectarUsuario() throws RemoteException{
-    fachada.desconectarUsuario();
-    vistaChat.setVisible(false);
+
+    public void desconectarUsuario() throws RemoteException {
+        fachada.desconectarUsuario();
+        vistaChat.setVisible(false);
     }
-   
+
 }
