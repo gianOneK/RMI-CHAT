@@ -82,10 +82,4 @@ public class Server extends UnicastRemoteObject implements IServer {
             //usuarios.values().forEach(user -> user.addMessage(notif));
         }
     }
-
-    
-    
-
-    
-
 }

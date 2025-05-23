@@ -19,7 +19,6 @@ public class ThreadChatActualizar extends Thread {
     private ChatGUI vista;
     private Cliente fachada;
 
-
     public ThreadChatActualizar(ChatGUI vista) {
         try {
             this.vista = vista;
@@ -34,8 +33,6 @@ public class ThreadChatActualizar extends Thread {
          while (true) {
             try {
                 Map<String, ArrayList<String[]>> mensajes = Cliente.getInstance().fetchMessages();
-                
-                
                 Thread.sleep(1000);
             } catch (InterruptedException | RemoteException ex) {
                 Logger.getLogger(ThreadChatListUsuarios.class.getName()).log(Level.SEVERE, null, ex);
@@ -44,5 +41,4 @@ public class ThreadChatActualizar extends Thread {
              }
         }
     }
-    
 }
