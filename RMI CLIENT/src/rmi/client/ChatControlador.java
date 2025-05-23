@@ -20,7 +20,13 @@ public class ChatControlador {
     public ChatControlador(ChatGUI vistaChat) throws Exception {
         this.vistaChat = vistaChat;
         actualizarListadoUsuarios();
-
+          vistaChat.getBtbSalir().addActionListener(e ->{
+            try {
+                desconectarUsuario();
+            } catch (Exception ex) {
+                Logger.getLogger(ChatControlador.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
     }
 
     private void actualizarChats() throws RemoteException {
@@ -32,5 +38,10 @@ public class ChatControlador {
         ThreadChatListUsuarios actualizar = new ThreadChatListUsuarios(vistaChat);
         actualizar.start();
     }
-
+     
+    public void desconectarUsuario() throws RemoteException{
+    fachada.desconectarUsuario();
+    vistaChat.setVisible(false);
+    }
+   
 }
