@@ -78,6 +78,12 @@ public class Cliente {
         return null;
     }
 
+    public void desconectarUsuario()throws RemoteException{
+    server.desconectarUsuario(name);
+     System.exit(0);
+    }
+    
+    
     public String getName() {
         return name;
     }
