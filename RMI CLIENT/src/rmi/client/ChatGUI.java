@@ -72,19 +72,17 @@ public class ChatGUI extends javax.swing.JFrame {
         for (Map.Entry<String, ArrayList<String[]>> entry : todosLosMensajes.entrySet()) {
             String contacto = entry.getKey();
             chats.putIfAbsent(contacto, new DefaultListModel<>());
-            DefaultListModel<Mensaje> modelo = chats.get(contacto);
 
             for (String[] msgArr : entry.getValue()) {
                 String remitente = msgArr[0];
                 String texto = msgArr[1];
                 String fecha = msgArr[2];
-                modelo.addElement(new Mensaje(remitente, texto, fecha));
+                chats.get(contacto).addElement(new Mensaje(remitente, texto, fecha));
             }
 
             // Si estoy viendo ese chat, actualizo la vista y hago scroll
             if (contacto.equals(listPersonasOnline.getSelectedValue())) {
-                lstChat.setModel(modelo);
-                lstChat.ensureIndexIsVisible(modelo.getSize() - 1);
+                lstChat.ensureIndexIsVisible(lstChat.getModel().getSize() - 1);
             }
         }
     }
@@ -138,6 +136,7 @@ public class ChatGUI extends javax.swing.JFrame {
         BtbSalir = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         lstChat = new javax.swing.JList<>();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle(" wHA");
@@ -165,6 +164,8 @@ public class ChatGUI extends javax.swing.JFrame {
         lstChat.setModel(new DefaultListModel<>());
         jScrollPane2.setViewportView(lstChat);
 
+        jLabel2.setText("jLabel2");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -179,13 +180,15 @@ public class ChatGUI extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(36, 36, 36)
                         .addComponent(BtbSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
+                .addGap(61, 61, 61)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(txtEnviarMensaje, javax.swing.GroupLayout.PREFERRED_SIZE, 462, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnEnviarMensaje, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 538, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 538, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(23, 23, 23))
             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -194,20 +197,23 @@ public class ChatGUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(17, 17, 17)
                 .addComponent(jLabel1)
-                .addGap(29, 29, 29)
+                .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnChatGlobal, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 339, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
+                        .addGap(42, 42, 42)
                         .addComponent(BtbSalir)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(13, 13, 13)
+                        .addGap(43, 43, 43)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnEnviarMensaje, javax.swing.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)
                             .addComponent(txtEnviarMensaje, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))))
@@ -290,6 +296,7 @@ public class ChatGUI extends javax.swing.JFrame {
     private javax.swing.JButton btnChatGlobal;
     private javax.swing.JButton btnEnviarMensaje;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JList<String> listPersonasOnline;

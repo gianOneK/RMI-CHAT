@@ -4,6 +4,9 @@
  */
 package rmi.client;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Kevin
@@ -24,7 +27,12 @@ public class Mensaje {
     public String getFecha() { return fecha; }
 
     public boolean esMio() {
-        return "YO".equals(remitente);
+        try {
+            return Cliente.getInstance().getName().equals(remitente);
+        } catch (Exception ex) {
+            Logger.getLogger(Mensaje.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 
     @Override

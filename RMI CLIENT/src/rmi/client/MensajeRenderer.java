@@ -1,29 +1,19 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package rmi.client;
 
+import java.awt.Color;
 import java.awt.Component;
-import javax.swing.BoxLayout;
+import java.awt.Font;
+import java.awt.FlowLayout;
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 
-/**
- *
- * @author Kevin
- */
 public class MensajeRenderer extends JPanel implements ListCellRenderer<Mensaje> {
-    private JLabel lblTexto = new JLabel();
-    private JLabel lblFecha = new JLabel();
 
     public MensajeRenderer() {
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setOpaque(true);
-        lblTexto.setOpaque(true);
-        lblFecha.setFont(lblFecha.getFont().deriveFont(10f));
     }
 
     @Override
@@ -31,29 +21,49 @@ public class MensajeRenderer extends JPanel implements ListCellRenderer<Mensaje>
                                                   int index, boolean isSelected, boolean cellHasFocus) {
         removeAll();
 
-        lblTexto.setText("<html><body style='width: 200px;'>" + value.getTexto() + "</body></html>");
-        lblFecha.setText(value.getFecha());
+        // Panel de burbuja de mensaje
+        JPanel panelContenido = new JPanel();
+        panelContenido.setLayout(new javax.swing.BoxLayout(panelContenido, javax.swing.BoxLayout.Y_AXIS));
+        panelContenido.setOpaque(true);
 
+        // Etiqueta de remitente en negrilla
+        JLabel lblRemitente = new JLabel(value.getRemitente());
+        lblRemitente.setFont(lblRemitente.getFont().deriveFont(Font.BOLD));
+
+        // Etiqueta de texto del mensaje
+        JLabel lblTexto = new JLabel("<html><body style='width: 200px;'>" + value.getTexto() + "</body></html>");
+        lblTexto.setFont(lblTexto.getFont().deriveFont(Font.PLAIN));
+        lblTexto.setOpaque(true);
+        lblTexto.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+
+        // Etiqueta de la fecha
+        JLabel lblFecha = new JLabel(value.getFecha());
+        lblFecha.setFont(lblFecha.getFont().deriveFont(10f));
+
+        // Colores diferentes si es propio o ajeno
         if (value.esMio()) {
-            setAlignmentX(Component.RIGHT_ALIGNMENT);
-            lblTexto.setHorizontalAlignment(JLabel.RIGHT);
+            setLayout(new FlowLayout(FlowLayout.RIGHT));
+            lblTexto.setBackground(new Color(220, 248, 198)); // verde claro
         } else {
-            setAlignmentX(Component.LEFT_ALIGNMENT);
-            lblTexto.setHorizontalAlignment(JLabel.LEFT);
+            setLayout(new FlowLayout(FlowLayout.LEFT));
+            lblTexto.setBackground(new Color(240, 240, 240)); // gris claro
         }
 
-        add(lblTexto);
-        add(lblFecha);
+        // Agregamos etiquetas al panel de contenido
+        panelContenido.add(lblRemitente);
+        panelContenido.add(lblTexto);
+        panelContenido.add(lblFecha);
 
+        // Colores de selección
         if (isSelected) {
             setBackground(list.getSelectionBackground());
-            lblTexto.setBackground(list.getSelectionBackground());
+            panelContenido.setBackground(list.getSelectionBackground());
         } else {
             setBackground(list.getBackground());
-            lblTexto.setBackground(list.getBackground());
+            panelContenido.setBackground(list.getBackground());
         }
 
+        add(panelContenido);
         return this;
     }
 }
-
