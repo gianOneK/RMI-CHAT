@@ -5,9 +5,13 @@
 package rmi.client;
 
 import java.awt.Component;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BoxLayout;
@@ -16,6 +20,8 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 /**
  *
@@ -23,7 +29,7 @@ import javax.swing.ListSelectionModel;
  */
 public class ChatGUI extends javax.swing.JFrame {
 
-    private DefaultListModel<String> userModel;
+    private DefaultListModel<String> userModel = new DefaultListModel<>();
     private Map<String, DefaultListModel<Mensaje>> chats = new HashMap<>();
 
 // En tu constructor o método init:
@@ -31,77 +37,89 @@ public class ChatGUI extends javax.swing.JFrame {
 
     /**
      */
-    public ChatGUI() {
-        try {
-            initComponents();
-            controlador = new ChatControlador(this);
-            lstChat.setCellRenderer(new MensajeRenderer());
+    public ChatGUI() throws Exception {
+        initComponents();
+        controlador = new ChatControlador(this);
 
-            listPersonasOnline.addListSelectionListener(e -> {
-                if (!e.getValueIsAdjusting()) {
-                    String selectedUser = listPersonasOnline.getSelectedValue();
-                    if (!chats.containsKey(selectedUser)) {
-                        chats.put(selectedUser, new DefaultListModel<>());
-                    }
-                    lstChat.setModel(chats.get(selectedUser));
-                }
-            });
-
-
-            /*
-            // Mensajes
-            JLabel mensaje = new JLabel("Hola, soy yo!" + " : *YO* ");
-            JLabel mensaje1 = new JLabel("Hol2, soy yo!");
-            mensaje1.setAlignmentX(Component.RIGHT_ALIGNMENT);
-            mensaje.setAlignmentX(Component.LEFT_ALIGNMENT);// Alineado a la derecha (tú)
-            chatPanel.add(mensaje);
-            chatPanel.add(mensaje1);
-            chatPanel.revalidate();
-            chatPanel.repaint();
-
-            scrollChat.getVerticalScrollBar().setValue(scrollChat.getVerticalScrollBar().getMaximum());
-             */
-        } catch (Exception ex) {
-            Logger.getLogger(ChatGUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-    }
-
-    public void actulizarListado(List<String> usuarios) {
-
-        userModel = new DefaultListModel<>();
-
-        for (String usuario : usuarios) {
-            userModel.addElement(usuario);
-        }
-
+        // Configuro lstChat para que use mi renderer y modelo dinámico
         listPersonasOnline.setModel(userModel);
+        lstChat.setCellRenderer(new MensajeRenderer());
+        lstChat.setFixedCellHeight(-1);  // permitir altura variable
 
-        listPersonasOnline.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        listPersonasOnline.addListSelectionListener(e -> {
-            if (!e.getValueIsAdjusting()) {
-                String selectedUser = listPersonasOnline.getSelectedValue();
-                //mostrarChatDe(selectedUser);
+        // Listener de selección de usuario
+        listPersonasOnline.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    String usuario = listPersonasOnline.getSelectedValue();
+                    if (usuario != null) {
+                        // Si no hay modelo para ese usuario, lo creo
+                        chats.putIfAbsent(usuario, new DefaultListModel<>());
+                        // Cambio el modelo de lstChat
+                        lstChat.setModel(chats.get(usuario));
+                    }
+                }
             }
         });
 
     }
 
-    /*
-    private void mostrarChatDe(String usuario) {
-        chatPanel.removeAll(); // limpiar panel
+    /**
+     * Este método lo llama ThreadChatActualizar cada segundo
+     */
+    public void refrescarMensajes(Map<String, ArrayList<String[]>> todosLosMensajes) {
+        // todosLosMensajes: clave=contacto, valor=lista de {remitente,texto,fecha}
+        for (Map.Entry<String, ArrayList<String[]>> entry : todosLosMensajes.entrySet()) {
+            String contacto = entry.getKey();
+            chats.putIfAbsent(contacto, new DefaultListModel<>());
+            DefaultListModel<Mensaje> modelo = chats.get(contacto);
 
-        JPanel historial = chats.get(usuario);
-        if (historial != null) {
-            for (Component c : historial.getComponents()) {
-                chatPanel.add(c);
+            for (String[] msgArr : entry.getValue()) {
+                String remitente = msgArr[0];
+                String texto = msgArr[1];
+                String fecha = msgArr[2];
+                modelo.addElement(new Mensaje(remitente, texto, fecha));
+            }
+
+            // Si estoy viendo ese chat, actualizo la vista y hago scroll
+            if (contacto.equals(listPersonasOnline.getSelectedValue())) {
+                lstChat.setModel(modelo);
+                lstChat.ensureIndexIsVisible(modelo.getSize() - 1);
+            }
+        }
+    }
+
+    public void actulizarListado(List<String> usuarios) {
+        // 1) Build a Set de los nuevos usuarios para búsquedas rápidas
+        Set<String> nuevos = new HashSet<>(usuarios);
+        // 2) Build a Set de los actuales en el modelo
+        Set<String> actuales = new HashSet<>();
+        for (int i = 0; i < userModel.getSize(); i++) {
+            actuales.add(userModel.getElementAt(i));
+        }
+
+        // 3) Eliminar los que ya no están
+        for (int i = userModel.getSize() - 1; i >= 0; i--) {
+            String elemento = userModel.getElementAt(i);
+            if (!nuevos.contains(elemento)) {
+                userModel.remove(i);
             }
         }
 
-        chatPanel.revalidate();
-        chatPanel.repaint();
+        // 4) Añadir los que faltan
+        for (String u : usuarios) {
+            if (!actuales.contains(u)) {
+                userModel.addElement(u);
+            }
+        }
+
+        // 5) Asegurarte de que la selección sigue siendo válida
+        String seleccionado = listPersonasOnline.getSelectedValue();
+        if (seleccionado != null && nuevos.contains(seleccionado)) {
+            listPersonasOnline.setSelectedValue(seleccionado, true);
+        }
     }
-     */
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -114,7 +132,7 @@ public class ChatGUI extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         listPersonasOnline = new javax.swing.JList<>();
         btnChatGlobal = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        txtEnviarMensaje = new javax.swing.JTextField();
         btnEnviarMensaje = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         BtbSalir = new javax.swing.JButton();
@@ -125,16 +143,12 @@ public class ChatGUI extends javax.swing.JFrame {
         setTitle(" wHA");
         setLocation(new java.awt.Point(0, 0));
 
-        listPersonasOnline.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
+        listPersonasOnline.setModel(new DefaultListModel<>());
         jScrollPane1.setViewportView(listPersonasOnline);
 
         btnChatGlobal.setText("Chat Global");
 
-        jTextField1.setToolTipText("Escribe...");
+        txtEnviarMensaje.setToolTipText("Escribe...");
 
         btnEnviarMensaje.setText("->");
         btnEnviarMensaje.addActionListener(new java.awt.event.ActionListener() {
@@ -148,11 +162,7 @@ public class ChatGUI extends javax.swing.JFrame {
 
         BtbSalir.setText("Salir");
 
-        lstChat.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
+        lstChat.setModel(new DefaultListModel<>());
         jScrollPane2.setViewportView(lstChat);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -164,18 +174,18 @@ public class ChatGUI extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(27, 27, 27)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane1)
-                            .addComponent(btnChatGlobal, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(btnChatGlobal, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(36, 36, 36)
                         .addComponent(BtbSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 386, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtEnviarMensaje, javax.swing.GroupLayout.PREFERRED_SIZE, 462, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnEnviarMensaje, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 462, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 538, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(23, 23, 23))
             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -200,7 +210,7 @@ public class ChatGUI extends javax.swing.JFrame {
                         .addGap(13, 13, 13)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnEnviarMensaje, javax.swing.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(txtEnviarMensaje, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
 
@@ -208,7 +218,29 @@ public class ChatGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEnviarMensajeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarMensajeActionPerformed
-        
+        try {
+            System.out.println("1");
+            String texto = txtEnviarMensaje.getText().trim();
+            System.out.println("2");
+            String destino = listPersonasOnline.getSelectedValue();
+            System.out.println("3");
+            if (!texto.isEmpty() && destino != null) {
+                System.out.println("4");
+                // 1) Enviar por RMI
+                controlador.enviarMensajeDirecto(destino, texto);
+                System.out.println("5");
+                // 2) Añadir al propio modelo (para verlo instantáneo)
+                DefaultListModel<Mensaje> modelo = chats.get(destino);
+                System.out.println("6");
+
+                txtEnviarMensaje.setText("");
+                // Hacer scroll al final
+                lstChat.ensureIndexIsVisible(modelo.getSize() - 1);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            System.out.println("error btnMensajes");
+        }
     }//GEN-LAST:event_btnEnviarMensajeActionPerformed
 
     /**
@@ -243,7 +275,11 @@ public class ChatGUI extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new ChatGUI().setVisible(true);
+                try {
+                    new ChatGUI().setVisible(true);
+                } catch (Exception ex) {
+                    Logger.getLogger(ChatGUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
 
             }
         });
@@ -256,9 +292,9 @@ public class ChatGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JList<String> listPersonasOnline;
-    private javax.swing.JList<String> lstChat;
+    private javax.swing.JList<Mensaje> lstChat;
+    private javax.swing.JTextField txtEnviarMensaje;
     // End of variables declaration//GEN-END:variables
 
     /**

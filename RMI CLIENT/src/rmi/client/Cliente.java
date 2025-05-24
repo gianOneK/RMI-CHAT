@@ -42,29 +42,6 @@ public class Cliente {
         String localHost = InetAddress.getLocalHost().getHostAddress();
         System.out.println(server.registrarUsuario(name, localHost));
 
-        // Inicia hilo de consulta de mensajes
-
-//        // Bucle de entrada de usuario
-//        Scanner sc = new Scanner(System.in);
-//        while (true) {
-//            System.out.println("Elige opción: 1) Directo 2) Global 3) Salir");
-//            String option = sc.nextLine();
-//            if ("1".equals(option)) {
-//                System.out.print("Para: ");
-//                String to = sc.nextLine();
-//                System.out.print("Mensaje: ");
-//                String msg = sc.nextLine();
-//                server.sendDirectMessage(name, to, msg);
-//            } else if ("2".equals(option)) {
-//                System.out.print("Mensaje global: ");
-//                String msg = sc.nextLine();
-//                server.sendGlobalMessage(name, msg);
-//            } else if ("3".equals(option)) {
-//                server.desconectarUsuario(name);
-//                System.out.println("Desconectado.");
-//                System.exit(0);
-//            }
-//        }
     }
 
     public List<String> getConnectedUsers() throws RemoteException {
@@ -96,5 +73,10 @@ public class Cliente {
     public void setName(String name) {
         this.name = name;
     }
+    
+    public void sendDirectMessage(String from, String to, String message) throws RemoteException{
+        server.sendDirectMessage(from, to, message);
+    }
+
 
 }

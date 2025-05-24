@@ -108,8 +108,6 @@ public class Server extends UnicastRemoteObject implements IServer {
             //usuarios.values().forEach(user -> user.addMessage(notif));
         }
     }
-<<<<<<< HEAD
-=======
 
     @Override
     public void latido(String username) throws RemoteException {
@@ -119,5 +117,4 @@ public class Server extends UnicastRemoteObject implements IServer {
         }
     }
 
->>>>>>> f83d151c27f8a24e3c48fc8cc831a894fecbdb7c
 }

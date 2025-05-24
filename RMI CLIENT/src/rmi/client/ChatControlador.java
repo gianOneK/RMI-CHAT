@@ -47,10 +47,20 @@ public class ChatControlador {
         ThreadChatListUsuarios actualizar = new ThreadChatListUsuarios(vistaChat);
         actualizar.start();
     }
+    
+    private void enviarMensajeThread(String destino, String texto) throws RemoteException {
+        ThreadEnviarMensaje enviar = new ThreadEnviarMensaje(vistaChat, destino, texto);
+        enviar.start();
+    }
+    
 
     public void desconectarUsuario() throws RemoteException {
         fachada.desconectarUsuario();
         vistaChat.setVisible(false);
+    }
+
+    void enviarMensajeDirecto(String destino, String texto) throws RemoteException {
+        enviarMensajeThread(destino, texto);
     }
 
 }

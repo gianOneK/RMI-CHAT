@@ -32,7 +32,8 @@ public class ThreadChatActualizar extends Thread {
     public void run(){
          while (true) {
             try {
-                Map<String, ArrayList<String[]>> mensajes = Cliente.getInstance().fetchMessages();
+                Map<String, ArrayList<String[]>> nuevos = Cliente.getInstance().fetchMessages();
+                 vista.refrescarMensajes(nuevos);
                 Thread.sleep(1000);
             } catch (InterruptedException | RemoteException ex) {
                 Logger.getLogger(ThreadChatListUsuarios.class.getName()).log(Level.SEVERE, null, ex);
