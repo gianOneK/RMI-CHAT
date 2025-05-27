@@ -1,16 +1,15 @@
 package rmi.client;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
+import java.awt.*;
 import javax.swing.*;
-import java.awt.Dimension;
 
 public class MensajeRenderer extends JPanel implements ListCellRenderer<Mensaje> {
 
+    private static final int MAX_WIDTH = 200;
+
     public MensajeRenderer() {
         setOpaque(true);
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS)); // más control, sin márgenes automáticos
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     }
 
     @Override
@@ -19,7 +18,7 @@ public class MensajeRenderer extends JPanel implements ListCellRenderer<Mensaje>
         removeAll();
         setBackground(list.getBackground());
 
-        // Panel contenedor de todo
+        // Panel contenido con BoxLayout vertical
         JPanel panelContenido = new JPanel();
         panelContenido.setLayout(new BoxLayout(panelContenido, BoxLayout.Y_AXIS));
         panelContenido.setOpaque(true);
@@ -30,46 +29,44 @@ public class MensajeRenderer extends JPanel implements ListCellRenderer<Mensaje>
         lblRemitente.setFont(lblRemitente.getFont().deriveFont(Font.BOLD));
         lblRemitente.setForeground(Color.DARK_GRAY);
 
-        // Texto
-        JTextArea txtMensaje = new JTextArea(value.getTexto());
+        // Texto: usar JTextPane para mejor manejo de texto multilínea
+        JTextPane txtMensaje = new JTextPane();
+        txtMensaje.setContentType("text/plain");
+        txtMensaje.setText(value.getTexto());
         txtMensaje.setFont(new Font("Arial", Font.PLAIN, 14));
-        txtMensaje.setLineWrap(true);
-        txtMensaje.setWrapStyleWord(true);
         txtMensaje.setEditable(false);
         txtMensaje.setOpaque(true);
         txtMensaje.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
         txtMensaje.setBackground(value.esMio() ? new Color(220, 248, 198) : new Color(240, 240, 240));
         txtMensaje.setForeground(Color.BLACK);
 
-        // Establecer el ancho y dejar que JTextArea calcule la altura
-        int maxAncho = 200;
-        txtMensaje.setSize(new Dimension(maxAncho, Short.MAX_VALUE));
-        txtMensaje.setMaximumSize(new Dimension(maxAncho, txtMensaje.getPreferredSize().height));
+        // Limitar ancho máximo y permitir altura variable
+        txtMensaje.setSize(new Dimension(MAX_WIDTH, Short.MAX_VALUE));
+        Dimension preferred = txtMensaje.getPreferredSize();
+        txtMensaje.setPreferredSize(new Dimension(MAX_WIDTH, preferred.height));
+        txtMensaje.setMaximumSize(new Dimension(MAX_WIDTH, preferred.height));
 
         // Fecha
         JLabel lblFecha = new JLabel(value.getFecha());
         lblFecha.setFont(lblFecha.getFont().deriveFont(10f));
         lblFecha.setForeground(Color.GRAY);
 
-        // Alineaciones (remitente, mensaje, fecha)
+        // Alineación basada en si es propio o ajeno
         float align = value.esMio() ? Component.RIGHT_ALIGNMENT : Component.LEFT_ALIGNMENT;
         lblRemitente.setAlignmentX(align);
         txtMensaje.setAlignmentX(align);
         lblFecha.setAlignmentX(align);
         panelContenido.setAlignmentX(align);
 
-        // Agregar todo
         panelContenido.add(lblRemitente);
         panelContenido.add(Box.createVerticalStrut(2));
         panelContenido.add(txtMensaje);
         panelContenido.add(Box.createVerticalStrut(2));
         panelContenido.add(lblFecha);
 
-        // Agregar padding lateral
-        int paddingLateral = 10;
-        panelContenido.setBorder(BorderFactory.createEmptyBorder(5, paddingLateral, 5, paddingLateral));
+        panelContenido.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
 
-        // Envolver en panel para espacio horizontal
+        // Wrapper para alinear a izquierda o derecha
         JPanel wrapper = new JPanel();
         wrapper.setLayout(new BoxLayout(wrapper, BoxLayout.X_AXIS));
         wrapper.setOpaque(false);
@@ -83,6 +80,14 @@ public class MensajeRenderer extends JPanel implements ListCellRenderer<Mensaje>
         }
 
         add(wrapper);
+
+        // Manejar selección
+        if (isSelected) {
+            setBackground(list.getSelectionBackground());
+            panelContenido.setBackground(list.getSelectionBackground());
+            txtMensaje.setBackground(list.getSelectionBackground());
+        }
+
         return this;
     }
 }

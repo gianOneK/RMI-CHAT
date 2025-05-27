@@ -50,7 +50,7 @@ public class ChatGUI extends javax.swing.JFrame {
         lstChat.setCellRenderer(new MensajeRenderer());
         lstChat.setFixedCellHeight(-1);  // permitir altura variable
         lstChat.setLayoutOrientation(JList.VERTICAL);
-        
+
         ajustarScrollPaneChat();
 
         // Listener de selección de usuario
@@ -100,6 +100,9 @@ public class ChatGUI extends javax.swing.JFrame {
                 String texto = msgArr[1];
                 String fecha = msgArr[2];
                 chats.get(contacto).addElement(new Mensaje(remitente, texto, fecha));
+                lstChat.revalidate();
+                lstChat.repaint();
+                lstChat.setModel(lstChat.getModel());  // Forzar refresco de layout
             }
 
             // Si estoy viendo ese chat, actualizo la vista y hago scroll

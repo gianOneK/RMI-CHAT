@@ -38,7 +38,7 @@ public class Cliente {
 
     public void register() throws Exception {
         //192.168.254.91
-        Registry reg = LocateRegistry.getRegistry("192.168.254.91", 3232);
+        Registry reg = LocateRegistry.getRegistry("localhost", 3232);
         this.server = (IServer) reg.lookup("rmiserver");
         String localHost = InetAddress.getLocalHost().getHostAddress();
         System.out.println(server.registrarUsuario(name, localHost));
