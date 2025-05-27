@@ -49,6 +49,9 @@ public class ChatGUI extends javax.swing.JFrame {
         listPersonasOnline.setModel(userModel);
         lstChat.setCellRenderer(new MensajeRenderer());
         lstChat.setFixedCellHeight(-1);  // permitir altura variable
+        lstChat.setLayoutOrientation(JList.VERTICAL);
+        
+        ajustarScrollPaneChat();
 
         // Listener de selección de usuario
         listPersonasOnline.addListSelectionListener(new ListSelectionListener() {
@@ -61,11 +64,26 @@ public class ChatGUI extends javax.swing.JFrame {
                         chats.putIfAbsent(usuario, new DefaultListModel<>());
                         // Cambio el modelo de lstChat
                         lstChat.setModel(chats.get(usuario));
+                        txtContacto.setText(usuario);
                     }
                 }
             }
         });
 
+    }
+
+    private void ajustarScrollPaneChat() {
+        int alturaDisponible = jLayeredPane1.getHeight();
+        int alturaPanelEnviar = panelEnviarMensaje.getHeight();
+
+        // Altura final para el JScrollPane
+        int nuevaAltura = alturaDisponible - alturaPanelEnviar;
+        if (nuevaAltura < 0) {
+            nuevaAltura = 0;
+        }
+
+        jScrollPane2.setBounds(0, 0, jLayeredPane1.getWidth(), nuevaAltura);
+        panelEnviarMensaje.setLocation(10, nuevaAltura); // Reubicar el panel al fondo
     }
 
     /**
@@ -186,6 +204,7 @@ public class ChatGUI extends javax.swing.JFrame {
         jLayeredPane1.setPreferredSize(new java.awt.Dimension(598, 310));
 
         jScrollPane2.setBackground(new java.awt.Color(51, 255, 255));
+        jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         jScrollPane2.setAlignmentX(Component.CENTER_ALIGNMENT);
         jScrollPane2.setAlignmentY(Component.TOP_ALIGNMENT);
         jScrollPane2.setMaximumSize(new java.awt.Dimension(592, 310));

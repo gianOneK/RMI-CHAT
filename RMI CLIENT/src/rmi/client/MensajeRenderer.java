@@ -3,67 +3,86 @@ package rmi.client;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
-import java.awt.FlowLayout;
-import javax.swing.BorderFactory;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.ListCellRenderer;
+import javax.swing.*;
+import java.awt.Dimension;
 
 public class MensajeRenderer extends JPanel implements ListCellRenderer<Mensaje> {
 
     public MensajeRenderer() {
         setOpaque(true);
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS)); // más control, sin márgenes automáticos
     }
 
     @Override
     public Component getListCellRendererComponent(JList<? extends Mensaje> list, Mensaje value,
                                                   int index, boolean isSelected, boolean cellHasFocus) {
         removeAll();
+        setBackground(list.getBackground());
 
-        // Panel de burbuja de mensaje
+        // Panel contenedor de todo
         JPanel panelContenido = new JPanel();
-        panelContenido.setLayout(new javax.swing.BoxLayout(panelContenido, javax.swing.BoxLayout.Y_AXIS));
+        panelContenido.setLayout(new BoxLayout(panelContenido, BoxLayout.Y_AXIS));
         panelContenido.setOpaque(true);
+        panelContenido.setBackground(list.getBackground());
 
-        // Etiqueta de remitente en negrilla
+        // Remitente
         JLabel lblRemitente = new JLabel(value.getRemitente());
         lblRemitente.setFont(lblRemitente.getFont().deriveFont(Font.BOLD));
+        lblRemitente.setForeground(Color.DARK_GRAY);
 
-        // Etiqueta de texto del mensaje
-        JLabel lblTexto = new JLabel("<html><body style='width: 200px;'>" + value.getTexto() + "</body></html>");
-        lblTexto.setFont(lblTexto.getFont().deriveFont(Font.PLAIN));
-        lblTexto.setOpaque(true);
-        lblTexto.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+        // Texto
+        JTextArea txtMensaje = new JTextArea(value.getTexto());
+        txtMensaje.setFont(new Font("Arial", Font.PLAIN, 14));
+        txtMensaje.setLineWrap(true);
+        txtMensaje.setWrapStyleWord(true);
+        txtMensaje.setEditable(false);
+        txtMensaje.setOpaque(true);
+        txtMensaje.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+        txtMensaje.setBackground(value.esMio() ? new Color(220, 248, 198) : new Color(240, 240, 240));
+        txtMensaje.setForeground(Color.BLACK);
 
-        // Etiqueta de la fecha
+        // Establecer el ancho y dejar que JTextArea calcule la altura
+        int maxAncho = 200;
+        txtMensaje.setSize(new Dimension(maxAncho, Short.MAX_VALUE));
+        txtMensaje.setMaximumSize(new Dimension(maxAncho, txtMensaje.getPreferredSize().height));
+
+        // Fecha
         JLabel lblFecha = new JLabel(value.getFecha());
         lblFecha.setFont(lblFecha.getFont().deriveFont(10f));
+        lblFecha.setForeground(Color.GRAY);
 
-        // Colores diferentes si es propio o ajeno
-        if (value.esMio()) {
-            setLayout(new FlowLayout(FlowLayout.RIGHT));
-            lblTexto.setBackground(new Color(220, 248, 198)); // verde claro
-        } else {
-            setLayout(new FlowLayout(FlowLayout.LEFT));
-            lblTexto.setBackground(new Color(240, 240, 240)); // gris claro
-        }
+        // Alineaciones (remitente, mensaje, fecha)
+        float align = value.esMio() ? Component.RIGHT_ALIGNMENT : Component.LEFT_ALIGNMENT;
+        lblRemitente.setAlignmentX(align);
+        txtMensaje.setAlignmentX(align);
+        lblFecha.setAlignmentX(align);
+        panelContenido.setAlignmentX(align);
 
-        // Agregamos etiquetas al panel de contenido
+        // Agregar todo
         panelContenido.add(lblRemitente);
-        panelContenido.add(lblTexto);
+        panelContenido.add(Box.createVerticalStrut(2));
+        panelContenido.add(txtMensaje);
+        panelContenido.add(Box.createVerticalStrut(2));
         panelContenido.add(lblFecha);
 
-        // Colores de selección
-        if (isSelected) {
-            setBackground(list.getSelectionBackground());
-            panelContenido.setBackground(list.getSelectionBackground());
+        // Agregar padding lateral
+        int paddingLateral = 10;
+        panelContenido.setBorder(BorderFactory.createEmptyBorder(5, paddingLateral, 5, paddingLateral));
+
+        // Envolver en panel para espacio horizontal
+        JPanel wrapper = new JPanel();
+        wrapper.setLayout(new BoxLayout(wrapper, BoxLayout.X_AXIS));
+        wrapper.setOpaque(false);
+
+        if (value.esMio()) {
+            wrapper.add(Box.createHorizontalGlue());
+            wrapper.add(panelContenido);
         } else {
-            setBackground(list.getBackground());
-            panelContenido.setBackground(list.getBackground());
+            wrapper.add(panelContenido);
+            wrapper.add(Box.createHorizontalGlue());
         }
 
-        add(panelContenido);
+        add(wrapper);
         return this;
     }
 }
