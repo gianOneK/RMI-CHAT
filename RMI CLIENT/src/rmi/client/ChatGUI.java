@@ -35,8 +35,9 @@ public class ChatGUI extends javax.swing.JFrame {
 
     private DefaultListModel<String> userModel = new DefaultListModel<>();
     private Map<String, DefaultListModel<Mensaje>> chats = new HashMap<>();
-
+    private Set<String> usuariosConMensajes = new HashSet<>();
 // En tu constructor o método init:
+
     private ChatControlador controlador;
 
     /**
@@ -46,7 +47,8 @@ public class ChatGUI extends javax.swing.JFrame {
         controlador = new ChatControlador(this);
 
         // Configuro lstChat para que use mi renderer y modelo dinámico
-        listPersonasOnline.setModel(userModel);
+        listPersonasOnline.setModel((userModel));
+        listPersonasOnline.setCellRenderer(new ListPersonasOnlineRenderer(usuariosConMensajes));
         lstChat.setCellRenderer(new MensajeRenderer());
         lstChat.setFixedCellHeight(-1);  // permitir altura variable
         lstChat.setLayoutOrientation(JList.VERTICAL);
@@ -64,6 +66,7 @@ public class ChatGUI extends javax.swing.JFrame {
                         chats.putIfAbsent(usuario, new DefaultListModel<>());
                         // Cambio el modelo de lstChat
                         lstChat.setModel(chats.get(usuario));
+                        usuariosConMensajes.remove(usuario);
                         txtContacto.setText(usuario);
                     }
                 }
@@ -94,11 +97,14 @@ public class ChatGUI extends javax.swing.JFrame {
         for (Map.Entry<String, ArrayList<String[]>> entry : todosLosMensajes.entrySet()) {
             String contacto = entry.getKey();
             chats.putIfAbsent(contacto, new DefaultListModel<>());
-
+            
             for (String[] msgArr : entry.getValue()) {
                 String remitente = msgArr[0];
                 String texto = msgArr[1];
                 String fecha = msgArr[2];
+                if(contacto==remitente){
+                marcarUsuarioConMensaje(contacto);
+                }
                 chats.get(contacto).addElement(new Mensaje(remitente, texto, fecha));
                 lstChat.revalidate();
                 lstChat.repaint();
@@ -141,6 +147,12 @@ public class ChatGUI extends javax.swing.JFrame {
         if (seleccionado != null && nuevos.contains(seleccionado)) {
             listPersonasOnline.setSelectedValue(seleccionado, true);
         }
+    }
+
+    public void marcarUsuarioConMensaje(String usuario) {
+        
+        usuariosConMensajes.add(usuario);
+        listPersonasOnline.repaint();
     }
 
     /**
@@ -426,5 +438,7 @@ public class ChatGUI extends javax.swing.JFrame {
     public javax.swing.JButton getBtbSalir() {
         return BtbSalir;
     }
+
+    
 
 }
