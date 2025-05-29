@@ -58,6 +58,21 @@ public class Server extends UnicastRemoteObject implements IServer {
 
     @Override
     public synchronized String registrarUsuario(String name, String IP) throws RemoteException {
+        if (usuarios.size() == 0) {
+            try {
+                String ipServidor = InetAddress.getLocalHost().getHostAddress();
+                Usuario global = new Usuario("Chat Global", ipServidor);
+                usuarios.put("Chat Global", global);
+            } catch (Exception e) {
+                System.err.println("No se pudo obtener la IP del servidor para el usuario Global");
+                e.printStackTrace();
+            }
+        }
+        
+        if ("Chat Global".equalsIgnoreCase(name)) {
+            return "Error: el nombre 'Chat Global' está reservado para el sistema.";
+        }
+
         Usuario u = new Usuario(name, IP);
         usuarios.put(name, u);
         String notif = "Sistema: " + name + " se ha unido.";
@@ -83,8 +98,18 @@ public class Server extends UnicastRemoteObject implements IServer {
 
     @Override
     public void sendGlobalMessage(String from, String message) throws RemoteException {
-        String msg = from + " (global): " + message;
-        //usuarios.values().forEach(user -> user.addMessage(msg));
+        String timestamp = LocalDateTime.now().toString();
+        Usuario chatGlobal = usuarios.get("Chat Global");
+
+        if (chatGlobal != null) {
+            chatGlobal.sendMessage("Chat Global", from, message, timestamp);
+        }
+
+        for (Usuario u : usuarios.values()) {
+            if (!u.getName().equals("Chat Global")) {
+                u.sendMessage("Chat Global", from, message, timestamp);
+            }
+        }
     }
 
     @Override
@@ -102,7 +127,11 @@ public class Server extends UnicastRemoteObject implements IServer {
 
     @Override
     public synchronized void desconectarUsuario(String name) throws RemoteException {
-        Usuario removed = usuarios.remove(name);
+        Usuario removed = null;
+        
+        if (!name.equals("Chat Global")) {
+            removed = usuarios.remove(name);
+        }
         if (removed != null) {
             String notif = "Sistema: " + name + " se ha desconectado.";
             //usuarios.values().forEach(user -> user.addMessage(notif));

@@ -38,6 +38,8 @@ public class ThreadChatListUsuarios extends Thread {
             try {
                 this.usuarios = fachada.getConnectedUsers();
                 usuarios.remove(nombre);
+                
+                
                 vista.actulizarListado(usuarios);
                 Thread.sleep(1000);
             } catch (InterruptedException ex) {

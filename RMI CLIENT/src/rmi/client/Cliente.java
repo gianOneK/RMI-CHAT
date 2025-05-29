@@ -30,11 +30,12 @@ public class Cliente {
     private Cliente() {
 
     }
+
     public void latidoAlServidor() throws RemoteException {
-    if (server != null && name != null) {
-        server.latido(name);
+        if (server != null && name != null) {
+            server.latido(name);
+        }
     }
-}
 
     public void register() throws Exception {
         //192.168.254.91
@@ -46,9 +47,13 @@ public class Cliente {
     }
 
     public List<String> getConnectedUsers() throws RemoteException {
+        List<String> usuarios = server.getConnectedUsers();
+        if (usuarios.remove("Chat Global")) {
+            usuarios.add(0, "Chat Global");  // lo inserta en la primera posición
+        }
 
         // Llama al método remoto del servidor para obtener la lista
-        return server.getConnectedUsers();
+        return usuarios;
 
     }
 
@@ -61,12 +66,11 @@ public class Cliente {
         return null;
     }
 
-    public void desconectarUsuario()throws RemoteException{
-    server.desconectarUsuario(name);
-    System.exit(0);
+    public void desconectarUsuario() throws RemoteException {
+        server.desconectarUsuario(name);
+        System.exit(0);
     }
-    
-    
+
     public String getName() {
         return name;
     }
@@ -74,10 +78,14 @@ public class Cliente {
     public void setName(String name) {
         this.name = name;
     }
-    
-    public void sendDirectMessage(String from, String to, String message) throws RemoteException{
+
+    public void sendDirectMessage(String from, String to, String message) throws RemoteException {
         server.sendDirectMessage(from, to, message);
     }
 
+    public void sendGlobalMessage(String from, String mensaje) throws RemoteException {
+
+        server.sendGlobalMessage(from, mensaje);
+    }
 
 }

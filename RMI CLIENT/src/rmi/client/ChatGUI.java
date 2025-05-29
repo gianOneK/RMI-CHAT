@@ -97,13 +97,13 @@ public class ChatGUI extends javax.swing.JFrame {
         for (Map.Entry<String, ArrayList<String[]>> entry : todosLosMensajes.entrySet()) {
             String contacto = entry.getKey();
             chats.putIfAbsent(contacto, new DefaultListModel<>());
-            
+
             for (String[] msgArr : entry.getValue()) {
                 String remitente = msgArr[0];
                 String texto = msgArr[1];
                 String fecha = msgArr[2];
-                if(contacto==remitente){
-                marcarUsuarioConMensaje(contacto);
+                if (contacto == remitente) {
+                    marcarUsuarioConMensaje(contacto);
                 }
                 chats.get(contacto).addElement(new Mensaje(remitente, texto, fecha));
                 lstChat.revalidate();
@@ -150,7 +150,7 @@ public class ChatGUI extends javax.swing.JFrame {
     }
 
     public void marcarUsuarioConMensaje(String usuario) {
-        
+
         usuariosConMensajes.add(usuario);
         listPersonasOnline.repaint();
     }
@@ -350,17 +350,24 @@ public class ChatGUI extends javax.swing.JFrame {
             String destino = listPersonasOnline.getSelectedValue();
             System.out.println("3");
             if (!texto.isEmpty() && destino != null) {
-                System.out.println("4");
-                // 1) Enviar por RMI
-                controlador.enviarMensajeDirecto(destino, texto);
-                System.out.println("5");
-                // 2) Añadir al propio modelo (para verlo instantáneo)
-                DefaultListModel<Mensaje> modelo = chats.get(destino);
-                System.out.println("6");
 
-                txtEnviarMensaje.setText("");
-                // Hacer scroll al final
-                lstChat.ensureIndexIsVisible(modelo.getSize() - 1);
+                if ("Chat Global".equals(destino)) {
+                    controlador.enviarMensajeGlobal(texto);
+                    txtEnviarMensaje.setText("");
+                } else {
+                    System.out.println("4");
+                    // 1) Enviar por RMI
+                    controlador.enviarMensajeDirecto(destino, texto);
+
+                    System.out.println("5");
+                    // 2) Añadir al propio modelo (para verlo instantáneo)
+                    DefaultListModel<Mensaje> modelo = chats.get(destino);
+                    System.out.println("6");
+
+                    txtEnviarMensaje.setText("");
+                    // Hacer scroll al final
+                    lstChat.ensureIndexIsVisible(modelo.getSize() - 1);
+                }
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -438,7 +445,5 @@ public class ChatGUI extends javax.swing.JFrame {
     public javax.swing.JButton getBtbSalir() {
         return BtbSalir;
     }
-
-    
 
 }

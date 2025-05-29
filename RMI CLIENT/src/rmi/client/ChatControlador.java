@@ -20,7 +20,7 @@ public class ChatControlador {
 
     public ChatControlador(ChatGUI vistaChat) throws Exception {
         this.vistaChat = vistaChat;
-       
+
         actualizarChats();
         actualizarListadoUsuarios();
 
@@ -28,7 +28,6 @@ public class ChatControlador {
         hiloPing = new ThreadLatidosCliente(fachada.getName());
         hiloPing.start();
 
-      
         vistaChat.getBtbSalir().addActionListener(e -> {
             try {
                 desconectarUsuario();
@@ -47,12 +46,11 @@ public class ChatControlador {
         ThreadChatListUsuarios actualizar = new ThreadChatListUsuarios(vistaChat);
         actualizar.start();
     }
-    
+
     private void enviarMensajeThread(String destino, String texto) throws RemoteException {
         ThreadEnviarMensaje enviar = new ThreadEnviarMensaje(vistaChat, destino, texto);
         enviar.start();
     }
-    
 
     public void desconectarUsuario() throws RemoteException {
         fachada.desconectarUsuario();
@@ -61,6 +59,11 @@ public class ChatControlador {
 
     void enviarMensajeDirecto(String destino, String texto) throws RemoteException {
         enviarMensajeThread(destino, texto);
+    }
+
+    public void enviarMensajeGlobal(String texto) throws RemoteException {
+        ThreadEnviarMensajeGlobal envio = new ThreadEnviarMensajeGlobal(fachada.getName(), texto);
+        envio.start();
     }
 
 }
