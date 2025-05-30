@@ -102,7 +102,7 @@ public class ChatGUI extends javax.swing.JFrame {
                 String remitente = msgArr[0];
                 String texto = msgArr[1];
                 String fecha = msgArr[2];
-                if (contacto == remitente) {
+                if (contacto.equals(remitente) || contacto.equals("Chat Global")) {
                     marcarUsuarioConMensaje(contacto);
                 }
                 chats.get(contacto).addElement(new Mensaje(remitente, texto, fecha));

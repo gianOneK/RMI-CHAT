@@ -19,6 +19,7 @@ public class Cliente {
     private String name;
     private static Cliente instancia;
     private Map<String, ArrayList<String[]>> mensajes = new HashMap();
+    private String IpServidor;
 
     public static synchronized Cliente getInstance() throws Exception {
         if (instancia == null) {
@@ -38,8 +39,8 @@ public class Cliente {
     }
 
     public void register() throws Exception {
-        //192.168.254.91
-        Registry reg = LocateRegistry.getRegistry("localhost", 3232);
+        String ip = getIpServidor();
+        Registry reg = LocateRegistry.getRegistry(ip, 3232);
         this.server = (IServer) reg.lookup("rmiserver");
         String localHost = InetAddress.getLocalHost().getHostAddress();
         System.out.println(server.registrarUsuario(name, localHost));
@@ -87,5 +88,21 @@ public class Cliente {
 
         server.sendGlobalMessage(from, mensaje);
     }
+
+    /**
+     * @return the IpServidor
+     */
+    public String getIpServidor() {
+        return IpServidor;
+    }
+
+    /**
+     * @param IpServidor the IpServidor to set
+     */
+    public void setIpServidor(String IpServidor) {
+        this.IpServidor = IpServidor;
+    }
+    
+    
 
 }

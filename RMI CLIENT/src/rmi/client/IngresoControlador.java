@@ -16,12 +16,15 @@ public class IngresoControlador {
 
     public IngresoControlador(IngresoGUI vista) {
         this.vista = vista;
+        
+        
 
     }
 
     public void ingresarServer() throws RemoteException, Exception {
 
         String nombre = vista.getTxtNombre().getText();
+     
 
         if (nombre == null || nombre.trim().isEmpty()) {
 
@@ -29,6 +32,7 @@ public class IngresoControlador {
 
         } else {
             Cliente.getInstance().setName(nombre);
+            Cliente.getInstance().setIpServidor(vista.getIpServidor());
             Cliente.getInstance().register();
             generarGUI();
             limpiar();
