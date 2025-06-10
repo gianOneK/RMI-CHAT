@@ -21,9 +21,11 @@ public class Cliente {
     private Map<String, ArrayList<String[]>> mensajes = new HashMap();
     private String IpServidor;
 
-    public static synchronized Cliente getInstance() throws Exception {
+    public static Cliente getInstance() throws Exception {
         if (instancia == null) {
-            instancia = new Cliente(); // Crea la instancia solo si no existe
+            synchronized (Cliente.class) {
+                instancia = new Cliente(); // Crea la instancia solo si no existe
+            }
         }
         return instancia;
     }
@@ -58,13 +60,10 @@ public class Cliente {
 
     }
 
-    public Map<String, ArrayList<String[]>> fetchMessages() {
-        try {
-            return server.fetchMessages(name);
-        } catch (RemoteException ex) {
-            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
+    public Map<String, ArrayList<String[]>> fetchMessages() throws RemoteException {
+
+        return server.fetchMessages(name);
+
     }
 
     public void desconectarUsuario() throws RemoteException {
@@ -102,7 +101,5 @@ public class Cliente {
     public void setIpServidor(String IpServidor) {
         this.IpServidor = IpServidor;
     }
-    
-    
 
 }
