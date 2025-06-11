@@ -58,7 +58,7 @@ public class Server extends UnicastRemoteObject implements IServer {
 
     @Override
     public synchronized String registrarUsuario(String name, String IP) throws RemoteException {
-        if (usuarios.size() == 0) {
+        if (usuarios.isEmpty()) {
             try {
                 String ipServidor = InetAddress.getLocalHost().getHostAddress();
                 Usuario global = new Usuario("Chat Global", ipServidor);
@@ -75,7 +75,7 @@ public class Server extends UnicastRemoteObject implements IServer {
 
         Usuario u = new Usuario(name, IP);
         usuarios.put(name, u);
-        String notif = "Sistema: " + name + " se ha unido.";
+        //String notif = "Sistema: " + name + " se ha unido.";
         //usuarios.values().forEach(user -> user.addMessage(notif));
         return imprimirUsuarios();
     }

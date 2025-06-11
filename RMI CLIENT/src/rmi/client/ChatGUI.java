@@ -6,6 +6,8 @@ package rmi.client;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,16 +23,19 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import rmi.client.Mensaje;
 
 /**
  *
  * @author Usuario
  */
+
 public class ChatGUI extends javax.swing.JFrame {
 
     private DefaultListModel<String> userModel = new DefaultListModel<>();
@@ -56,6 +61,14 @@ public class ChatGUI extends javax.swing.JFrame {
         ajustarScrollPaneChat();
 
         // Listener de selección de usuario
+        // En el constructor, después de initComponents() 
+        jLayeredPane1.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                SwingUtilities.invokeLater(() -> ajustarScrollPaneChat());
+            }
+        }); // Método mejorado private void ajustarScrollPaneChat() { if (jLayeredPane1.getHeight() <= 0) return; // Evitar cálculos con altura 0 int alturaDisponible = jLayeredPane1.getHeight(); int alturaPanelEnviar = panelEnviarMensaje.getPreferredSize().height; int nuevaAltura = Math.max(100, alturaDisponible - alturaPanelEnviar - 10); jScrollPane2.setBounds(0, 0, jLayeredPane1.getWidth(), nuevaAltura); panelEnviarMensaje.setLocation(10, nuevaAltura + 5); }
+
         listPersonasOnline.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
@@ -89,34 +102,61 @@ public class ChatGUI extends javax.swing.JFrame {
         panelEnviarMensaje.setLocation(10, nuevaAltura); // Reubicar el panel al fondo
     }
 
-    /**
-     * Este método lo llama ThreadChatActualizar cada segundo
-     */
     public void refrescarMensajes(Map<String, ArrayList<String[]>> todosLosMensajes) {
-        // todosLosMensajes: clave=contacto, valor=lista de {remitente,texto,fecha}
+        boolean needsUpdate = false;
         for (Map.Entry<String, ArrayList<String[]>> entry : todosLosMensajes.entrySet()) {
             String contacto = entry.getKey();
             chats.putIfAbsent(contacto, new DefaultListModel<>());
-
+            DefaultListModel<Mensaje> modelo = chats.get(contacto); // Batch add - más eficiente 
+            List<Mensaje> nuevos = new ArrayList<>();
             for (String[] msgArr : entry.getValue()) {
-                String remitente = msgArr[0];
-                String texto = msgArr[1];
-                String fecha = msgArr[2];
-                if (contacto.equals(remitente) || contacto.equals("Chat Global")) {
+                nuevos.add(new Mensaje(msgArr[0], msgArr[1], msgArr[2]));
+                if (contacto.equals(msgArr[0]) || contacto.equals("Chat Global")) {
                     marcarUsuarioConMensaje(contacto);
                 }
-                chats.get(contacto).addElement(new Mensaje(remitente, texto, fecha));
-                lstChat.revalidate();
-                lstChat.repaint();
-                lstChat.setModel(lstChat.getModel());  // Forzar refresco de layout
-            }
-
-            // Si estoy viendo ese chat, actualizo la vista y hago scroll
-            if (contacto.equals(listPersonasOnline.getSelectedValue())) {
-                lstChat.ensureIndexIsVisible(lstChat.getModel().getSize() - 1);
+            } // Agregar todos de una vez 
+for (Mensaje msg : nuevos) { modelo.addElement(msg); } 
+if (!nuevos.isEmpty() && contacto.equals(listPersonasOnline.getSelectedValue())) { 
+needsUpdate = true; } } 
+// Una sola actualización al final 
+            if (needsUpdate) {
+                SwingUtilities.invokeLater(() -> {
+                    lstChat.revalidate();
+                    lstChat.ensureIndexIsVisible(lstChat.getModel().getSize() - 1);
+                });
             }
         }
-    }
+
+    
+
+    /**
+     * Este método lo llama ThreadChatActualizar cada segundo
+     */
+    //    public void refrescarMensajes(Map<String, ArrayList<String[]>> todosLosMensajes) {
+    //        // todosLosMensajes: clave=contacto, valor=lista de {remitente,texto,fecha}
+    //        for (Map.Entry<String, ArrayList<String[]>> entry : todosLosMensajes.entrySet()) {
+    //            String contacto = entry.getKey();
+    //            chats.putIfAbsent(contacto, new DefaultListModel<>());
+    //
+    //            for (String[] msgArr : entry.getValue()) {
+    //                String remitente = msgArr[0];
+    //                String texto = msgArr[1];
+    //                String fecha = msgArr[2];
+    //                if (contacto.equals(remitente) || contacto.equals("Chat Global")) {
+    //                    marcarUsuarioConMensaje(contacto);
+    //                }
+    //                chats.get(contacto).addElement(new Mensaje(remitente, texto, fecha));
+    //                lstChat.revalidate();
+    //                lstChat.repaint();
+    //                lstChat.setModel(lstChat.getModel());  // Forzar refresco de layout
+    //            }
+    //
+    //            // Si estoy viendo ese chat, actualizo la vista y hago scroll
+    //            if (contacto.equals(listPersonasOnline.getSelectedValue())) {
+    //                lstChat.ensureIndexIsVisible(lstChat.getModel().getSize() - 1);
+    //            }
+    //        }
+    //    }
 
     public void actulizarListado(List<String> usuarios) {
         // 1) Build a Set de los nuevos usuarios para búsquedas rápidas
@@ -383,43 +423,43 @@ public class ChatGUI extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+    /* Set the Nimbus look and feel */
+    //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+    /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
+     */
+    try {
+        for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+            if ("Nimbus".equals(info.getName())) {
+                javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                break;
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ChatGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ChatGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ChatGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ChatGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    new ChatGUI().setVisible(true);
-                } catch (Exception ex) {
-                    Logger.getLogger(ChatGUI.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-            }
-        });
+    } catch (ClassNotFoundException ex) {
+        java.util.logging.Logger.getLogger(ChatGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    } catch (InstantiationException ex) {
+        java.util.logging.Logger.getLogger(ChatGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    } catch (IllegalAccessException ex) {
+        java.util.logging.Logger.getLogger(ChatGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        java.util.logging.Logger.getLogger(ChatGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
     }
+    //</editor-fold>
+    //</editor-fold>
+
+    /* Create and display the form */
+    java.awt.EventQueue.invokeLater(new Runnable() {
+        @Override
+        public void run() {
+            try {
+                new ChatGUI().setVisible(true);
+            } catch (Exception ex) {
+                Logger.getLogger(ChatGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+    });
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtbSalir;

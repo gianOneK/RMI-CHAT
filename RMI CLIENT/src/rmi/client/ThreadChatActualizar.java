@@ -29,17 +29,22 @@ public class ThreadChatActualizar extends Thread {
     }
     
     @Override
-    public void run(){
-         while (true) {
-            try {
-                Map<String, ArrayList<String[]>> nuevos = Cliente.getInstance().fetchMessages();
-                vista.refrescarMensajes(nuevos);
-                Thread.sleep(500);
-            } catch (InterruptedException | RemoteException ex) {
-                Logger.getLogger(ThreadChatListUsuarios.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (Exception ex) {
-                 Logger.getLogger(ThreadChatActualizar.class.getName()).log(Level.SEVERE, null, ex);
-             }
+public void run() {
+    while (true) {
+        try {
+            Map<String, ArrayList<String[]>> nuevos = Cliente.getInstance().fetchMessages();
+            
+            if(!nuevos.isEmpty()){
+
+            vista.refrescarMensajes(nuevos);
+            }
+            Thread.sleep(500);
+        } catch (InterruptedException | RemoteException ex) {
+            Logger.getLogger(ThreadChatListUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(ThreadChatActualizar.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+}
+
 }
