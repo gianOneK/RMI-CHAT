@@ -32,7 +32,7 @@ public class ListPersonasOnlineRenderer extends DefaultListCellRenderer {
         String nombreUsuario = value.toString();
 
         if (usuariosConMensajes.contains(nombreUsuario)) {
-            label.setForeground(new Color(255, 215, 0)); 
+            label.setForeground(new Color(0, 255, 0)); 
             label.setFont(label.getFont().deriveFont(Font.BOLD)); 
         } else {
             label.setForeground(Color.BLACK);
