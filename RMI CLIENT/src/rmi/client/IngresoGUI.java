@@ -21,6 +21,7 @@ public final class IngresoGUI extends javax.swing.JFrame {
     public IngresoGUI() {
         this.controlador = new IngresoControlador(this);
         initComponents();
+        validarBotonIngresar();
 
     }
 
@@ -85,6 +86,11 @@ public final class IngresoGUI extends javax.swing.JFrame {
                 txtNombreActionPerformed(evt);
             }
         });
+        txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtNombreKeyReleased(evt);
+            }
+        });
 
         jLabel2.setText("Iniciar Sesión - WhatsApp");
 
@@ -104,6 +110,11 @@ public final class IngresoGUI extends javax.swing.JFrame {
         txtIPServidor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtIPServidorActionPerformed(evt);
+            }
+        });
+        txtIPServidor.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtIPServidorKeyReleased(evt);
             }
         });
 
@@ -217,10 +228,18 @@ public final class IngresoGUI extends javax.swing.JFrame {
         if (jCheckBoxExterna.isSelected()) {
             jCheckBoxLocal.setSelected(false);
             txtIPServidor.setEnabled(true);
-            btbIngresar.setEnabled(true);
-            
+            validarBotonIngresar();
+
         }
     }//GEN-LAST:event_jCheckBoxExternaActionPerformed
+
+    private void txtNombreKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyReleased
+        validarBotonIngresar();
+    }//GEN-LAST:event_txtNombreKeyReleased
+
+    private void txtIPServidorKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIPServidorKeyReleased
+       validarBotonIngresar();
+    }//GEN-LAST:event_txtIPServidorKeyReleased
 
     /**
      * @param args the command line arguments
@@ -292,17 +311,21 @@ public final class IngresoGUI extends javax.swing.JFrame {
     public void setIpServidor(String IpServidor) {
         this.ipServidor = IpServidor;
     }
-    
+
+    /* 
+    Metodo que será usado en jCheckBoxExternaActionPerformed, valida sí el 
+    nombre del cliente y el ip del servidor son validos, para poder habilitar el
+    boton de ingreso al chat*/
     private void validarBotonIngresar() {
-    boolean nombreValido = !txtNombre.getText().trim().isEmpty();
-    boolean conexionValida = false;
-    
-    if (jCheckBoxLocal.isSelected()) {
-        conexionValida = true;
-    } else if (jCheckBoxExterna.isSelected()) {
-        conexionValida = !txtIPServidor.getText().trim().isEmpty();
+        boolean nombreValido = !txtNombre.getText().trim().isEmpty();
+        boolean conexionValida = false;
+
+        if (jCheckBoxLocal.isSelected()) {
+            conexionValida = true;
+        } else if (jCheckBoxExterna.isSelected()) {
+            conexionValida = !txtIPServidor.getText().trim().isEmpty();
+        }
+
+        btbIngresar.setEnabled(nombreValido && conexionValida);
     }
-    
-    btbIngresar.setEnabled(nombreValido && conexionValida);
-}
 }
