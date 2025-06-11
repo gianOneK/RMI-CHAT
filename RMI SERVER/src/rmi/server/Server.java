@@ -176,6 +176,7 @@ public class Server extends UnicastRemoteObject implements IServer {
 
         if (!name.equals("Chat Global")) {
             removed = usuarios.remove(name);
+            sendGlobalMessage("Chat Global","Se desconecto a usuario "+name);
         }
         if (removed != null) {
             String notif = "Sistema: " + name + " se ha desconectado.";
