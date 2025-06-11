@@ -268,7 +268,6 @@ public class ChatGUI extends javax.swing.JFrame {
         txtEnviarMensaje.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         txtEnviarMensaje.setToolTipText("Escribe...");
         txtEnviarMensaje.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        txtEnviarMensaje.setKeymap(null);
         txtEnviarMensaje.setMargin(new java.awt.Insets(2, 4, 2, 6));
         txtEnviarMensaje.setMaximumSize(new java.awt.Dimension(500, 500));
         txtEnviarMensaje.setMinimumSize(new java.awt.Dimension(100, 80));
