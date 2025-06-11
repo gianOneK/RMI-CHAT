@@ -6,6 +6,8 @@ package rmi.client;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.time.LocalDateTime;
@@ -40,12 +42,9 @@ public class ChatGUI extends javax.swing.JFrame {
     private DefaultListModel<String> userModel = new DefaultListModel<>();
     private Map<String, DefaultListModel<Mensaje>> chats = new HashMap<>();
     private Set<String> usuariosConMensajes = new HashSet<>();
-// En tu constructor o método init:
-
     private ChatControlador controlador;
 
-    /**
-     */
+   
     public ChatGUI() throws Exception {
         initComponents();
         controlador = new ChatControlador(this);
@@ -56,15 +55,24 @@ public class ChatGUI extends javax.swing.JFrame {
         lstChat.setCellRenderer(new MensajeRenderer());
         lstChat.setFixedCellHeight(-1);  // permitir altura variable
         lstChat.setLayoutOrientation(JList.VERTICAL);
-
         ajustarScrollPaneChat();
+
+        
+        //LISTENERS Y ADAPTERS (Son como actualizar los objetos cuando se modifican)
+        
+        txtEnviarMensaje.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                btnEnviarMensajeActionPerformed(e);
+            }
+        });
 
         layPaneChat.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
                 SwingUtilities.invokeLater(() -> ajustarScrollPaneChat());
             }
-        }); // Método mejorado 
+        });
 
         listPersonasOnline.addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -84,6 +92,7 @@ public class ChatGUI extends javax.swing.JFrame {
         });
 
     }
+    // AJUSTA LAS DIMENSIONES DE LA SCROLLBAR DEL CHAT
 
     private void ajustarScrollPaneChat() {
         int alturaDisponible = layPaneChat.getHeight();
@@ -99,8 +108,7 @@ public class ChatGUI extends javax.swing.JFrame {
         panelEnviarMensaje.setLocation(10, nuevaAltura); // Reubicar el panel al fondo
     }
 
- 
-
+    //ACTUALIZA TODAS LAS BANDEJAS DE MENSAJES (ThreadChatActualizar)
     public void refrescarMensajes(Map<String, ArrayList<String[]>> todosLosMensajes) {
         boolean needsUpdate = false;
         for (Map.Entry<String, ArrayList<String[]>> entry : todosLosMensajes.entrySet()) {
@@ -113,7 +121,8 @@ public class ChatGUI extends javax.swing.JFrame {
                 if (contacto.equals(msgArr[0]) || contacto.equals("Chat Global")) {
                     marcarUsuarioConMensaje(contacto);
                 }
-            } // Agregar todos de una vez 
+            }
+            // Agregar todos de una vez 
             for (Mensaje msg : nuevos) {
                 modelo.addElement(msg);
             }
@@ -121,7 +130,7 @@ public class ChatGUI extends javax.swing.JFrame {
                 needsUpdate = true;
             }
         }
-// Una sola actualización al final 
+        // Una sola actualización al final 
         if (needsUpdate) {
             SwingUtilities.invokeLater(() -> {
                 lstChat.revalidate();
@@ -130,36 +139,7 @@ public class ChatGUI extends javax.swing.JFrame {
         }
     }
 
-    /**
-     * Este método lo llama ThreadChatActualizar cada segundo
-     *
-     * @param usuarios
-     */
-    //    public void refrescarMensajes(Map<String, ArrayList<String[]>> todosLosMensajes) {
-    //        // todosLosMensajes: clave=contacto, valor=lista de {remitente,texto,fecha}
-    //        for (Map.Entry<String, ArrayList<String[]>> entry : todosLosMensajes.entrySet()) {
-    //            String contacto = entry.getKey();
-    //            chats.putIfAbsent(contacto, new DefaultListModel<>());
-    //
-    //            for (String[] msgArr : entry.getValue()) {
-    //                String remitente = msgArr[0];
-    //                String texto = msgArr[1];
-    //                String fecha = msgArr[2];
-    //                if (contacto.equals(remitente) || contacto.equals("Chat Global")) {
-    //                    marcarUsuarioConMensaje(contacto);
-    //                }
-    //                chats.get(contacto).addElement(new Mensaje(remitente, texto, fecha));
-    //                lstChat.revalidate();
-    //                lstChat.repaint();
-    //                lstChat.setModel(lstChat.getModel());  // Forzar refresco de layout
-    //            }
-    //
-    //            // Si estoy viendo ese chat, actualizo la vista y hago scroll
-    //            if (contacto.equals(listPersonasOnline.getSelectedValue())) {
-    //                lstChat.ensureIndexIsVisible(lstChat.getModel().getSize() - 1);
-    //            }
-    //        }
-    //    }
+    //ACTUALIZA LOS USUARIOS ACTIVOS (ThreadChatListUsuarios)
     public void actulizarListado(List<String> usuarios) {
         // 1) Build a Set de los nuevos usuarios para búsquedas rápidas
         Set<String> nuevos = new HashSet<>(usuarios);
@@ -191,8 +171,8 @@ public class ChatGUI extends javax.swing.JFrame {
         }
     }
 
+    //CAMBIA EL COLOR DE MENSAJES SIN LEER (ListPersonasOnlineRenderer)
     public void marcarUsuarioConMensaje(String usuario) {
-
         usuariosConMensajes.add(usuario);
         listPersonasOnline.repaint();
     }
@@ -235,9 +215,9 @@ public class ChatGUI extends javax.swing.JFrame {
         panelSuperior.setBackground(new java.awt.Color(255, 255, 255));
         panelSuperior.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
 
-        txtContacto.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        txtContacto.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         txtContacto.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        txtContacto.setText("Contacto");
+        txtContacto.setText("Selecciona un chat !");
 
         javax.swing.GroupLayout panelSuperiorLayout = new javax.swing.GroupLayout(panelSuperior);
         panelSuperior.setLayout(panelSuperiorLayout);
@@ -285,17 +265,15 @@ public class ChatGUI extends javax.swing.JFrame {
         panelEnviarMensaje.setPreferredSize(new java.awt.Dimension(200, 50));
         panelEnviarMensaje.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 20, 10));
 
+        txtEnviarMensaje.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         txtEnviarMensaje.setToolTipText("Escribe...");
         txtEnviarMensaje.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        txtEnviarMensaje.setKeymap(null);
+        txtEnviarMensaje.setMargin(new java.awt.Insets(2, 4, 2, 6));
         txtEnviarMensaje.setMaximumSize(new java.awt.Dimension(500, 500));
         txtEnviarMensaje.setMinimumSize(new java.awt.Dimension(100, 80));
         txtEnviarMensaje.setOpaque(true);
         txtEnviarMensaje.setPreferredSize(new java.awt.Dimension(450, 50));
-        txtEnviarMensaje.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtEnviarMensajeActionPerformed(evt);
-            }
-        });
         panelEnviarMensaje.add(txtEnviarMensaje);
 
         btnEnviarMensaje.setBackground(new java.awt.Color(51, 255, 51));
@@ -327,7 +305,7 @@ public class ChatGUI extends javax.swing.JFrame {
 
         panelIzquierda.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
-        BtbSalir.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        BtbSalir.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         BtbSalir.setText("Salir");
         BtbSalir.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
         BtbSalir.setPreferredSize(new java.awt.Dimension(72, 46));
@@ -384,30 +362,28 @@ public class ChatGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    // ENVIA MENSAJES (Controlador -> ThreadEnviarMensaje)
     private void btnEnviarMensajeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarMensajeActionPerformed
         try {
-            System.out.println("1");
+            // VERIFICACION DEL MENSAJE
             String texto = txtEnviarMensaje.getText().trim();
-            System.out.println("2");
             String destino = listPersonasOnline.getSelectedValue();
-            System.out.println("3");
             if (!texto.isEmpty() && destino != null) {
 
+                //MENSAJE GLOBAL
                 if ("Chat Global".equals(destino)) {
                     controlador.enviarMensajeGlobal(texto);
                     txtEnviarMensaje.setText("");
-                } else {
-                    System.out.println("4");
-                    // 1) Enviar por RMI
+                } //MENSAJE DIRECTO
+                else {
+                    // 1)Enviar por RMI
                     controlador.enviarMensajeDirecto(destino, texto);
-
-                    System.out.println("5");
                     // 2) Añadir al propio modelo (para verlo instantáneo)
                     DefaultListModel<Mensaje> modelo = chats.get(destino);
-                    System.out.println("6");
 
+                    //VACIAR BANDEJA DE MENSAJERIA
                     txtEnviarMensaje.setText("");
-                    // Hacer scroll al final
+                    //AJUSTAR LA BARRA DE SCROLL AL FINAL
                     lstChat.ensureIndexIsVisible(modelo.getSize() - 1);
                 }
             }
@@ -416,10 +392,6 @@ public class ChatGUI extends javax.swing.JFrame {
             System.out.println("error btnMensajes");
         }
     }//GEN-LAST:event_btnEnviarMensajeActionPerformed
-
-    private void txtEnviarMensajeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEnviarMensajeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtEnviarMensajeActionPerformed
 
     /**
      * @param args the command line arguments
