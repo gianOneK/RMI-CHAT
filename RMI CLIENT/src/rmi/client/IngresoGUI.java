@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 public final class IngresoGUI extends javax.swing.JFrame {
 
     private IngresoControlador controlador;
-    private String IpServidor;
+    private String ipServidor;
 
     public IngresoGUI() {
         this.controlador = new IngresoControlador(this);
@@ -209,7 +209,7 @@ public final class IngresoGUI extends javax.swing.JFrame {
             txtIPServidor.setEnabled(false);
             txtIPServidor.setText("");
             btbIngresar.setEnabled(true);
-            IpServidor = "localhost";
+            ipServidor = "localhost";
         }
     }//GEN-LAST:event_jCheckBoxLocalActionPerformed
 
@@ -283,13 +283,26 @@ public final class IngresoGUI extends javax.swing.JFrame {
      * @return the IpServidor
      */
     public String getIpServidor() {
-        return IpServidor;
+        return ipServidor;
     }
 
     /**
      * @param IpServidor the IpServidor to set
      */
     public void setIpServidor(String IpServidor) {
-        this.IpServidor = IpServidor;
+        this.ipServidor = IpServidor;
     }
+    
+    private void validarBotonIngresar() {
+    boolean nombreValido = !txtNombre.getText().trim().isEmpty();
+    boolean conexionValida = false;
+    
+    if (jCheckBoxLocal.isSelected()) {
+        conexionValida = true;
+    } else if (jCheckBoxExterna.isSelected()) {
+        conexionValida = !txtIPServidor.getText().trim().isEmpty();
+    }
+    
+    btbIngresar.setEnabled(nombreValido && conexionValida);
+}
 }

@@ -74,11 +74,11 @@ public class ChatControlador {
         
     }
 
-    // Este metodo es para gestionar el hilo de latidos, será llamado por <iniciarHiloPing()>
+    // Este metodo es para gestionar el hilo de latidos, será llamado por pr el constructor
     public void cerrarRecursosPing() {
         if (hiloPing != null) {
             hiloPing.detener();
-            /* Método para parar el hilo de forma segura, 
+                                   /* Método para parar el hilo de forma segura, 
                                    es llamado desde la clase ThreadLatidosCliente*/
         }
         

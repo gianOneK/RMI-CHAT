@@ -44,7 +44,7 @@ public class IngresoControlador {
     public void generarGUI() throws RemoteException, Exception {
         ChatGUI chat = new ChatGUI();
         System.out.println("Nombre: " + Cliente.getInstance().getName());
-        vista.setVisible(false);
+        vista.dispose();
         chat.setVisible(true);
 
     }
