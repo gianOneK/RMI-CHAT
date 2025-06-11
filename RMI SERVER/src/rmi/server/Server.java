@@ -5,23 +5,39 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.rmi.RemoteException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 public class Server extends UnicastRemoteObject implements IServer {
 
     private static final int PUERTO = 3232;
+    private static final long TIEMPO_INACTIVIDAD = 10000;
+    private static final long INTERVALO_VERIFICACION = 5_000; // 5 segundos
+    private static final String USUARIO_GLOBAL = "Chat Global";
+    private static final DateTimeFormatter FORMATO_FECHA = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
     private final Map<String, Usuario> usuarios = new ConcurrentHashMap<>();
     private final Map<String, Long> ultimoLatido = new ConcurrentHashMap<>();
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+    private static final Logger logger = Logger.getLogger(Server.class.getName());
 
     protected Server() throws RemoteException {
         super();
-        iniciarVerificador();
+        inicializarUsuarioGlobal();
+        iniciarVerificadorInactividad();
     }
 
     public static void main(String[] args) throws Exception {
@@ -31,52 +47,81 @@ public class Server extends UnicastRemoteObject implements IServer {
         System.out.println("Servidor RMI listo en puerto " + PUERTO);
     }
 
-    private void iniciarVerificador() {
-        new Thread(() -> {
-            while (true) {
+    private void iniciarVerificadorInactividad() {
+        Runnable verificador = new Runnable() {
+            public void run() {
                 long ahora = System.currentTimeMillis();
-                for (String usuario : new ArrayList<>(usuarios.keySet())) {
-                    Long ultimo = ultimoLatido.getOrDefault(usuario, 0L);
-                    if (ahora - ultimo > 2000) { // 
-                        System.out.println("Desconectando por inactividad a: " + usuario);
-                        try {
-                            desconectarUsuario(usuario);
-                        } catch (RemoteException e) {
-                            e.printStackTrace();
-                        }
-                        ultimoLatido.remove(usuario);
+                List<String> usuariosInactivos = new ArrayList<String>();
+
+                // Identificar usuarios inactivos
+                for (Map.Entry<String, Long> entry : ultimoLatido.entrySet()) {
+                    String usuario = entry.getKey();
+                    Long ultimoTiempo = entry.getValue();
+
+                    if (!USUARIO_GLOBAL.equals(usuario) && (ahora - ultimoTiempo) > TIEMPO_INACTIVIDAD) {
+                        usuariosInactivos.add(usuario);
                     }
                 }
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+
+                // Desconectar usuarios inactivos
+                for (String usuario : usuariosInactivos) {
+                    logger.info("Desconectando por inactividad a: " + usuario);
+                    try {
+                        desconectarUsuario(usuario);
+                    } catch (RemoteException e) {
+                        logger.log(Level.WARNING, "Error al desconectar usuario inactivo: " + usuario, e);
+                    }
                 }
             }
-        }).start();
+        };
+
+        scheduler.scheduleAtFixedRate(verificador, INTERVALO_VERIFICACION, INTERVALO_VERIFICACION, TimeUnit.MILLISECONDS);
+    }
+
+    /* Este metodo crea el ChatGlobal y se ejecuta en el constructor, toma el ip 
+    del propio equipo y agrega a chatGlobal como usuario en el listado Usuarios,
+    el logger solo funciona como un manejo de excepciones o depuracion, en consola*/
+    private void inicializarUsuarioGlobal() {
+        try {
+            String ipServidor = InetAddress.getLocalHost().getHostAddress();
+            Usuario global = new Usuario(USUARIO_GLOBAL, ipServidor);
+            usuarios.put(USUARIO_GLOBAL, global);
+            logger.info("Usuario global inicializado con IP: " + ipServidor);
+        } catch (UnknownHostException e) {
+            logger.log(Level.WARNING, "No se pudo obtener la IP del servidor", e);
+
+        }
     }
 
     @Override
     public synchronized String registrarUsuario(String name, String IP) throws RemoteException {
-        if (usuarios.isEmpty()) {
-            try {
-                String ipServidor = InetAddress.getLocalHost().getHostAddress();
-                Usuario global = new Usuario("Chat Global", ipServidor);
-                usuarios.put("Chat Global", global);
-            } catch (Exception e) {
-                System.err.println("No se pudo obtener la IP del servidor para el usuario Global");
-                e.printStackTrace();
-            }
-        }
-        
-        if ("Chat Global".equalsIgnoreCase(name)) {
-            return "Error: el nombre 'Chat Global' está reservado para el sistema.";
+        // Validaciones de entrada
+        if (name == null || name.trim().isEmpty()) {
+            return "Error: El nombre de usuario no puede estar vacío.";
         }
 
-        Usuario u = new Usuario(name, IP);
-        usuarios.put(name, u);
-        //String notif = "Sistema: " + name + " se ha unido.";
-        //usuarios.values().forEach(user -> user.addMessage(notif));
+        name = name.trim();
+
+        if (USUARIO_GLOBAL.equalsIgnoreCase(name)) {
+            return "Error: El nombre '" + USUARIO_GLOBAL + "' está reservado para el sistema.";
+        }
+
+        if (usuarios.containsKey(name)) {
+            return "Error: El usuario '" + name + "' ya está conectado.";
+        }
+
+        if (IP == null || IP.trim().isEmpty()) {
+            return "Error: La IP no puede estar vacía.";
+        }
+
+        // Registrar usuario
+        Usuario nuevoUsuario = new Usuario(name, IP.trim());
+        usuarios.put(name, nuevoUsuario);
+        ultimoLatido.put(name, System.currentTimeMillis());
+
+        logger.info("Usuario registrado: " + name + " desde IP: " + IP);
+
+//       
         return imprimirUsuarios();
     }
 
@@ -128,7 +173,7 @@ public class Server extends UnicastRemoteObject implements IServer {
     @Override
     public synchronized void desconectarUsuario(String name) throws RemoteException {
         Usuario removed = null;
-        
+
         if (!name.equals("Chat Global")) {
             removed = usuarios.remove(name);
         }

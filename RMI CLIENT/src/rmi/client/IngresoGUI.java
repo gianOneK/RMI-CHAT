@@ -219,7 +219,7 @@ public final class IngresoGUI extends javax.swing.JFrame {
             jCheckBoxExterna.setSelected(false);
             txtIPServidor.setEnabled(false);
             txtIPServidor.setText("");
-            btbIngresar.setEnabled(true);
+            validarBotonIngresar();
             ipServidor = "localhost";
         }
     }//GEN-LAST:event_jCheckBoxLocalActionPerformed
