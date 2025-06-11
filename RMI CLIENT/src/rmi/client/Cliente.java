@@ -34,9 +34,11 @@ public class Cliente {
 
     }
 
+    //
     public void latidoAlServidor() throws RemoteException {
         if (server != null && name != null) {
             server.latido(name);
+            System.out.println("En cliente "+name);
         }
     }
 
@@ -71,14 +73,6 @@ public class Cliente {
         System.exit(0);
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public void sendDirectMessage(String from, String to, String message) throws RemoteException {
         server.sendDirectMessage(from, to, message);
     }
@@ -86,6 +80,15 @@ public class Cliente {
     public void sendGlobalMessage(String from, String mensaje) throws RemoteException {
 
         server.sendGlobalMessage(from, mensaje);
+    }
+
+    // GETTERS Y SETTERS
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**

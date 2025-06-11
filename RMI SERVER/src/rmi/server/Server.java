@@ -114,14 +114,14 @@ public class Server extends UnicastRemoteObject implements IServer {
             return "Error: La IP no puede estar vacía.";
         }
 
-        // Registrar usuario
+        // Logica para crear el usuario y agregarlo al listado de usuarios
         Usuario nuevoUsuario = new Usuario(name, IP.trim());
         usuarios.put(name, nuevoUsuario);
         ultimoLatido.put(name, System.currentTimeMillis());
-
+        
+       // Mensaje en consola para depurar
         logger.info("Usuario registrado: " + name + " desde IP: " + IP);
 
-//       
         return imprimirUsuarios();
     }
 
@@ -187,7 +187,7 @@ public class Server extends UnicastRemoteObject implements IServer {
     public void latido(String username) throws RemoteException {
         if (usuarios.containsKey(username)) {
             ultimoLatido.put(username, System.currentTimeMillis());
-            // Opcional: System.out.println("Ping recibido de " + username);
+            System.out.println("Ping recibido de " + username);
         }
     }
 

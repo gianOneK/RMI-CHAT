@@ -28,6 +28,7 @@ public class ChatControlador {
         actualizarChats();
         actualizarListadoUsuarios();
         iniciarHiloPing();
+        //Logica para cerrar los hilos ya no usados
         Runtime.getRuntime().addShutdownHook(new Thread(this::cerrarRecursosPing));
         
         vistaChat.getBtbSalir().addActionListener(e -> {
@@ -62,24 +63,29 @@ public class ChatControlador {
     void enviarMensajeDirecto(String destino, String texto) throws RemoteException {
         enviarMensajeThread(destino, texto);
     }
-    
+    /*METODO PARA LA LOGICA DEL ENVIO DE MENSAJES EN USUARIO CHAT GLOBAL, CREA 
+    SU HILO Y LO EJECUTA, ENVIANDO CON SI LOS PARAMETROS: EL TEXTO ESCRITO EN LA
+    GUI, NOMBRE DEL USUARIO*/
     public void enviarMensajeGlobal(String texto) throws RemoteException {
         ThreadEnviarMensajeGlobal envio = new ThreadEnviarMensajeGlobal(fachada.getName(), texto);
         envio.start();
     }
     
+    
+    /*ESTE METODO INICIALIZADO EN EL CONSTRUCTOR, ES PARA DAR INICIO A LOS
+    LATIDOS, CREA UN HILO Y LE ENVIA EL NOMBRE DEL USUARIO */
     public void iniciarHiloPing() {
         hiloPing = new ThreadLatidosCliente(fachada.getName());
         executorService.submit(hiloPing);
         
     }
 
-    // Este metodo es para gestionar el hilo de latidos, será llamado por pr el constructor
+    // Este metodo es para gestionar el hilo de latidos, será llamado por el constructor
     public void cerrarRecursosPing() {
         if (hiloPing != null) {
             hiloPing.detener();
-                                   /* Método para parar el hilo de forma segura, 
-                                   es llamado desde la clase ThreadLatidosCliente*/
+         /* Método para parar el hilo de forma segura, 
+         es llamado desde la clase ThreadLatidosCliente*/                          
         }
         
         if (executorService != null && !executorService.isShutdown()) {
