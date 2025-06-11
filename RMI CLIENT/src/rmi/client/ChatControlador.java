@@ -5,6 +5,9 @@
 package rmi.client;
 
 import java.rmi.RemoteException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,16 +20,14 @@ public class ChatControlador {
     private ChatGUI vistaChat;
     private Cliente fachada = Cliente.getInstance();
     private ThreadLatidosCliente hiloPing;
+    private ExecutorService executorService = Executors.newCachedThreadPool();
 
     public ChatControlador(ChatGUI vistaChat) throws Exception {
         this.vistaChat = vistaChat;
 
         actualizarChats();
         actualizarListadoUsuarios();
-
-        // Inicia el hilo de ping para mantener al usuario "vivo"
-        hiloPing = new ThreadLatidosCliente(fachada.getName());
-        hiloPing.start();
+        iniciarHiloPing();
 
         vistaChat.getBtbSalir().addActionListener(e -> {
             try {
@@ -64,6 +65,32 @@ public class ChatControlador {
     public void enviarMensajeGlobal(String texto) throws RemoteException {
         ThreadEnviarMensajeGlobal envio = new ThreadEnviarMensajeGlobal(fachada.getName(), texto);
         envio.start();
+    }
+
+    public void iniciarHiloPing() {
+        hiloPing = new ThreadLatidosCliente(fachada.getName());
+        executorService.submit(hiloPing);
+
+    }
+
+    // Este metodo es para gestionar el hilo de latidos, será llamado por <iniciarHiloPing()>
+    public void cerrarRecursosPing() {
+        if (hiloPing != null) {
+            hiloPing.detener();
+            /* Método para parar el hilo de forma segura, 
+                                   es llamado desde la clase ThreadLatidosCliente*/
+        }
+
+        if (executorService != null && !executorService.isShutdown()) {
+            executorService.shutdown();
+            try {
+                if (!executorService.awaitTermination(5, TimeUnit.SECONDS)) {
+                    executorService.shutdownNow();
+                }
+            } catch (InterruptedException e) {
+                executorService.shutdownNow();
+            }
+        }
     }
 
 }

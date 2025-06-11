@@ -14,7 +14,7 @@ import java.util.logging.Logger;
  */
 public class ThreadLatidosCliente extends Thread {
 
-    private  Cliente fachada;
+    private Cliente fachada;
     private volatile boolean activo = true;
     private String nombreUsuario;
 
@@ -31,12 +31,12 @@ public class ThreadLatidosCliente extends Thread {
         activo = false;
     }
 
-   @Override
+    @Override
     public void run() {
         while (activo) {
             try {
                 fachada.latidoAlServidor();
-                Thread.sleep(1); // cada 5 segundos
+                Thread.sleep(2000); 
             } catch (RemoteException e) {
                 Logger.getLogger(ThreadLatidosCliente.class.getName()).log(Level.SEVERE, "Ping fallido", e);
                 break;
