@@ -36,7 +36,7 @@ public class ThreadLatidosCliente extends Thread {
         while (activo) {
             try {
                 fachada.latidoAlServidor();
-                Thread.sleep(3000); 
+                Thread.sleep(2000); 
             } catch (RemoteException e) {
                 Logger.getLogger(ThreadLatidosCliente.class.getName()).log(Level.SEVERE, "Ping fallido", e);
                 break;
