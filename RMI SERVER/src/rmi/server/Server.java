@@ -29,6 +29,7 @@ public class Server extends UnicastRemoteObject implements IServer {
     private static final String USUARIO_GLOBAL = "Chat Global";
     private static final DateTimeFormatter FORMATO_FECHA = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
+    private final Map<String, ArrayList<Usuario>> grupos = new ConcurrentHashMap<>();
     private final Map<String, Usuario> usuarios = new ConcurrentHashMap<>();
     private final Map<String, Long> ultimoLatido = new ConcurrentHashMap<>();
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
@@ -115,7 +116,7 @@ public class Server extends UnicastRemoteObject implements IServer {
             if (u.getConnected()) {
                 return "Error: El usuario '" + name + "' ya está conectado.";
             } else {
-                
+
                 u.setConnected(true);
                 sendGlobalMessage("Chat Global", "Se reconecto: " + name);
                 u.cargarCopiaMensajes(dao.obtenerMensajes(name));
@@ -174,13 +175,56 @@ public class Server extends UnicastRemoteObject implements IServer {
         String timestamp = LocalDateTime.now().toString();
         Usuario chatGlobal = usuarios.get("Chat Global");
         UsuarioDAOH2 dao = new UsuarioDAOH2();
+        ArrayList<Usuario> usuariosMensaje = new ArrayList<>();
+                
+        for(Usuario u: usuarios.values()){
+            usuariosMensaje.add(u);
+        }
 
         if (chatGlobal != null) {
             chatGlobal.sendMessage("Chat Global", from, message, timestamp);
             dao.insertarMensaje("Chat Global", "Chat Global", from, message, timestamp);
         }
 
-        for (Usuario u : usuarios.values()) {
+        String sql = new String(message);
+
+        if (sql.startsWith("@", 0)) {
+            sql = sql.replaceAll("@", "");
+            if (sql.startsWith("crearGrupo ", 0)) {
+                sql = sql.replaceAll("crearGrupo ", "");
+
+                System.out.println("1");
+                String nombreGrupo = sql.split(" ")[0];
+                sql = sql.replaceAll(nombreGrupo + " ", "");
+
+                String[] nombres = sql.split(" ");
+                System.out.println("2");
+
+                for (String s : nombres) {
+                    s = s.replace("@", "");
+
+                    for (Usuario u : usuarios.values()) {
+                        if (s.equals(u.getName())) {
+                            grupos.putIfAbsent(nombreGrupo, new ArrayList<>());
+                            grupos.get(nombreGrupo).add(u);
+                        }
+                    }
+                    usuariosMensaje = grupos.get(nombreGrupo);
+                    message = "*** Acaba de ser agregado al grupo "+nombreGrupo+" mediante invitacion de "+from;
+                }
+                                System.out.println("3");
+
+            } else {
+                for (String nombreGrupo : grupos.keySet()) {
+                    if (sql.startsWith(nombreGrupo, 0)) {                        
+                        message = message.replaceFirst("@"+nombreGrupo + " ", "("+nombreGrupo+") > ");
+                        usuariosMensaje = grupos.get(nombreGrupo);
+                    }
+                }
+            }
+        }
+
+        for (Usuario u : usuariosMensaje) {
             if (!u.getName().equals("Chat Global")) {
                 u.sendMessage("Chat Global", from, message, timestamp);
                 dao.insertarMensaje(u.getName(), "Chat Global", from, message, timestamp);

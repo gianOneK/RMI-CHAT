@@ -42,13 +42,13 @@ public class Cliente {
         }
     }
 
-    public void register() throws Exception {
+    public String register() throws Exception {
         String ip = getIpServidor();
         Registry reg = LocateRegistry.getRegistry(ip, 3232);
         this.server = (IServer) reg.lookup("rmiserver");
         String localHost = InetAddress.getLocalHost().getHostAddress();
-        System.out.println(server.registrarUsuario(name, localHost));
-
+        String registrado = server.registrarUsuario(name, localHost);   
+        return registrado;
     }
 
     public List<String> getConnectedUsers() throws RemoteException {

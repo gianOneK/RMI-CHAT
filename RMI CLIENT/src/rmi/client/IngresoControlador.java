@@ -5,6 +5,7 @@
 package rmi.client;
 
 import java.rmi.RemoteException;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -31,8 +32,9 @@ public class IngresoControlador {
         } else {
             Cliente.getInstance().setName(nombre);
             Cliente.getInstance().setIpServidor(ip);
-            Cliente.getInstance().register();
+            String estadoRegistro = Cliente.getInstance().register();
             generarGUI();
+            JOptionPane msg = new JOptionPane(estadoRegistro);
             limpiar();
         }
     }
