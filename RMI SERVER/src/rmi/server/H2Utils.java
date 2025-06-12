@@ -15,7 +15,7 @@ import java.sql.SQLException;
 
 public class H2Utils {
 
-    private static final String DB_URL = "jdbc:h2:./data/chatdb"; // Crea archivo en carpeta 'data'
+    private static final String DB_URL = "jdbc:h2:~/test"; // Crea archivo en carpeta 'data'
     private static final String DB_USER = "sa";
     private static final String DB_PASSWORD = "";
 

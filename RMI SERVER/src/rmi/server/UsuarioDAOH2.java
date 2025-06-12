@@ -17,6 +17,29 @@ import java.util.Map;
 public class UsuarioDAOH2 {
 
     // Crea la tabla si no existe. Cada tabla representa el historial de un usuario.
+    
+    public void vaciarTodasLasTablasMensajes() {
+    String sqlTablas = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME LIKE 'MSG_%'";
+        System.out.println("VACIANDO TABLAS");
+
+    try (Connection conn = H2Utils.getConnection();
+         Statement stmt = conn.createStatement();
+         ResultSet rs = stmt.executeQuery(sqlTablas)) {
+
+        while (rs.next()) {
+            String nombreTabla = rs.getString("TABLE_NAME");
+            String deleteSql = "DELETE FROM " + nombreTabla;
+
+            try (Statement deleteStmt = conn.createStatement()) {
+                deleteStmt.executeUpdate(deleteSql);
+                System.out.println("Vaciada tabla: " + nombreTabla);
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+}
+    
     public void crearTablaSiNoExiste(String nombreUsuario) {
         String tableName = obtenerNombreTabla(nombreUsuario);
         String sql = "CREATE TABLE IF NOT EXISTS " + tableName + " ("

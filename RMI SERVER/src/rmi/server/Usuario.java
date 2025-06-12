@@ -12,9 +12,9 @@ public class Usuario {
 
     private final String name;
     private final String IP;
-    private boolean actualizado;
-    private final Map<String, ArrayList<String[]>> cola = new HashMap<>();
-    private final Map<String, ArrayList<String[]>> mensajes = new HashMap<>();
+    private boolean connected = true;
+    private Map<String, ArrayList<String[]>> cola = new HashMap<>();
+    private Map<String, ArrayList<String[]>> mensajes = new HashMap<>();
 
     public Usuario(String name, String IP) {
         this.name = name;
@@ -32,10 +32,19 @@ public class Usuario {
         cola.putIfAbsent(contacto, new ArrayList<>());
         cola.get(contacto).add(mensaje);
     }
-    
-    public void loadMessages(){
-        for(String c: cola.keySet()){
-            for(String[] mensaje: cola.get(c)){
+
+    public Map<String, ArrayList<String[]>> fetchMessages() {
+        Map<String, ArrayList<String[]>> msgs;
+        synchronized (cola) {
+            msgs = new HashMap<>(cola);
+            loadMessages();
+        }
+        return msgs;
+    }
+
+    public void loadMessages() {
+        for (String c : cola.keySet()) {
+            for (String[] mensaje : cola.get(c)) {
                 String remitente = mensaje[0];
                 String msg = mensaje[1];
                 String time = mensaje[2];
@@ -53,12 +62,17 @@ public class Usuario {
         return IP;
     }
 
-    public Map<String, ArrayList<String[]>> fetchMessages() {
-        Map<String, ArrayList<String[]>> msgs;
-        synchronized (cola) {
-            msgs = new HashMap<>(cola);
-            loadMessages();
-        }
-        return msgs;
+    public void cargarCopiaMensajes(Map<String, ArrayList<String[]>> m) {
+        mensajes.clear();
+        cola = new HashMap(m);
     }
+
+    public boolean getConnected() {
+        return this.connected;
+    }
+
+    public void setConnected(Boolean b) {
+        this.connected = b;
+    }
+
 }

@@ -1,0 +1,325 @@
+2025-06-11 22:00:35.057167-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_CHAT_GLOBAL" not found (this database is empty); SQL statement:
+INSERT INTO msg_chat_global (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:00:35.083743-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_KEVIN" not found (this database is empty); SQL statement:
+INSERT INTO msg_kevin (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:01:27.146336-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_CHAT_GLOBAL" not found (this database is empty); SQL statement:
+INSERT INTO msg_chat_global (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:01:27.171280-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_KEVIN" not found (this database is empty); SQL statement:
+INSERT INTO msg_kevin (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:01:27.196875-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_JUAN" not found (this database is empty); SQL statement:
+INSERT INTO msg_juan (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:02:00.115172-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_CHAT_GLOBAL" not found (this database is empty); SQL statement:
+INSERT INTO msg_chat_global (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:02:00.162248-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_KEVIN" not found (this database is empty); SQL statement:
+INSERT INTO msg_kevin (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:02:00.199849-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_JUAN" not found (this database is empty); SQL statement:
+INSERT INTO msg_juan (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:03:55.494114-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_CHAT_GLOBAL" not found (this database is empty); SQL statement:
+INSERT INTO msg_chat_global (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:03:55.533119-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_KEVIN" not found (this database is empty); SQL statement:
+INSERT INTO msg_kevin (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:06:20.394538-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_CHAT_GLOBAL" not found (this database is empty); SQL statement:
+INSERT INTO msg_chat_global (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:06:20.413682-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_KEVIN" not found (this database is empty); SQL statement:
+INSERT INTO msg_kevin (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:06:36.656877-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_CHAT_GLOBAL" not found (this database is empty); SQL statement:
+INSERT INTO msg_chat_global (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:06:36.678047-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_KEVIN" not found (this database is empty); SQL statement:
+INSERT INTO msg_kevin (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:06:36.696312-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_TENI" not found (this database is empty); SQL statement:
+INSERT INTO msg_teni (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:06:46.862305-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_KEVIN" not found (this database is empty); SQL statement:
+INSERT INTO msg_kevin (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:06:46.888449-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_TENI" not found (this database is empty); SQL statement:
+INSERT INTO msg_teni (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:06:55.827563-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_TENI" not found (this database is empty); SQL statement:
+INSERT INTO msg_teni (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:06:55.860594-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_KEVIN" not found (this database is empty); SQL statement:
+INSERT INTO msg_kevin (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:07:12.230367-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_CHAT_GLOBAL" not found (this database is empty); SQL statement:
+INSERT INTO msg_chat_global (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:07:12.249875-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_KEVIN" not found (this database is empty); SQL statement:
+INSERT INTO msg_kevin (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:07:12.279833-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_TENI" not found (this database is empty); SQL statement:
+INSERT INTO msg_teni (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:07:25.684797-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_CHAT_GLOBAL" not found (this database is empty); SQL statement:
+INSERT INTO msg_chat_global (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:07:25.717159-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_KEVIN" not found (this database is empty); SQL statement:
+INSERT INTO msg_kevin (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:07:25.752254-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_TENI" not found (this database is empty); SQL statement:
+INSERT INTO msg_teni (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:07:30.694697-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_CHAT_GLOBAL" not found (this database is empty); SQL statement:
+INSERT INTO msg_chat_global (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:07:30.714861-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_KEVIN" not found (this database is empty); SQL statement:
+INSERT INTO msg_kevin (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:07:30.742989-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_TENI" not found (this database is empty); SQL statement:
+INSERT INTO msg_teni (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:07:32.164539-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_CHAT_GLOBAL" not found (this database is empty); SQL statement:
+INSERT INTO msg_chat_global (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:07:32.178788-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_KEVIN" not found (this database is empty); SQL statement:
+INSERT INTO msg_kevin (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:07:32.202411-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_TENI" not found (this database is empty); SQL statement:
+INSERT INTO msg_teni (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:07:32.230662-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_KEVIN" not found (this database is empty); SQL statement:
+SELECT contacto, remitente, mensaje, fechaHora FROM msg_kevin [42104-232]
+2025-06-11 22:07:32.259044-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_CHAT_GLOBAL" not found (this database is empty); SQL statement:
+INSERT INTO msg_chat_global (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:07:32.322756-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_KEVIN" not found (this database is empty); SQL statement:
+INSERT INTO msg_kevin (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:07:32.337814-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_TENI" not found (this database is empty); SQL statement:
+INSERT INTO msg_teni (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:09:03.898791-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_CHAT_GLOBAL" not found (this database is empty); SQL statement:
+INSERT INTO msg_chat_global (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:09:03.937779-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_KEVIN" not found (this database is empty); SQL statement:
+INSERT INTO msg_kevin (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:09:16.622753-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_CHAT_GLOBAL" not found (this database is empty); SQL statement:
+INSERT INTO msg_chat_global (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:09:16.654081-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_KEVIN" not found (this database is empty); SQL statement:
+INSERT INTO msg_kevin (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:09:16.676113-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_TENI" not found (this database is empty); SQL statement:
+INSERT INTO msg_teni (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:09:28.491145-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_KEVIN" not found (this database is empty); SQL statement:
+INSERT INTO msg_kevin (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:09:28.524670-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_TENI" not found (this database is empty); SQL statement:
+INSERT INTO msg_teni (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:09:30.358092-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_KEVIN" not found (this database is empty); SQL statement:
+INSERT INTO msg_kevin (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:09:30.373731-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_TENI" not found (this database is empty); SQL statement:
+INSERT INTO msg_teni (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:09:37.241094-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_TENI" not found (this database is empty); SQL statement:
+INSERT INTO msg_teni (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:09:37.265524-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_KEVIN" not found (this database is empty); SQL statement:
+INSERT INTO msg_kevin (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:09:43.247646-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_CHAT_GLOBAL" not found (this database is empty); SQL statement:
+INSERT INTO msg_chat_global (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:09:43.285277-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_KEVIN" not found (this database is empty); SQL statement:
+INSERT INTO msg_kevin (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:09:43.311010-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_TENI" not found (this database is empty); SQL statement:
+INSERT INTO msg_teni (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:09:55.124183-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_CHAT_GLOBAL" not found (this database is empty); SQL statement:
+INSERT INTO msg_chat_global (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:09:55.173941-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_KEVIN" not found (this database is empty); SQL statement:
+INSERT INTO msg_kevin (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:09:55.199941-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_TENI" not found (this database is empty); SQL statement:
+INSERT INTO msg_teni (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:10:00.120522-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_CHAT_GLOBAL" not found (this database is empty); SQL statement:
+INSERT INTO msg_chat_global (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:10:00.157718-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_KEVIN" not found (this database is empty); SQL statement:
+INSERT INTO msg_kevin (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:10:00.173444-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_TENI" not found (this database is empty); SQL statement:
+INSERT INTO msg_teni (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:10:03.776880-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_CHAT_GLOBAL" not found (this database is empty); SQL statement:
+INSERT INTO msg_chat_global (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:10:03.804484-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_KEVIN" not found (this database is empty); SQL statement:
+INSERT INTO msg_kevin (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:10:03.825078-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_TENI" not found (this database is empty); SQL statement:
+INSERT INTO msg_teni (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:10:03.855284-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_TENI" not found (this database is empty); SQL statement:
+SELECT contacto, remitente, mensaje, fechaHora FROM msg_teni [42104-232]
+2025-06-11 22:14:20.601123-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_CHAT_GLOBAL" not found (this database is empty); SQL statement:
+INSERT INTO msg_chat_global (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:14:20.622894-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_KEVIN" not found (this database is empty); SQL statement:
+INSERT INTO msg_kevin (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:14:29.587246-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_CHAT_GLOBAL" not found (this database is empty); SQL statement:
+INSERT INTO msg_chat_global (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:14:29.608351-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_KEVIN" not found (this database is empty); SQL statement:
+INSERT INTO msg_kevin (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:14:29.630014-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_TENI" not found (this database is empty); SQL statement:
+INSERT INTO msg_teni (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:14:39.183953-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_KEVIN" not found (this database is empty); SQL statement:
+INSERT INTO msg_kevin (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:14:39.216267-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_TENI" not found (this database is empty); SQL statement:
+INSERT INTO msg_teni (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:14:47.168651-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_CHAT_GLOBAL" not found (this database is empty); SQL statement:
+INSERT INTO msg_chat_global (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:14:47.204029-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_KEVIN" not found (this database is empty); SQL statement:
+INSERT INTO msg_kevin (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:14:47.224509-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_TENI" not found (this database is empty); SQL statement:
+INSERT INTO msg_teni (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:14:55.862225-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_TENI" not found (this database is empty); SQL statement:
+INSERT INTO msg_teni (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:14:55.896405-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_KEVIN" not found (this database is empty); SQL statement:
+INSERT INTO msg_kevin (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:15:00.013427-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_CHAT_GLOBAL" not found (this database is empty); SQL statement:
+INSERT INTO msg_chat_global (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:15:00.032204-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_KEVIN" not found (this database is empty); SQL statement:
+INSERT INTO msg_kevin (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:15:00.071823-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_TENI" not found (this database is empty); SQL statement:
+INSERT INTO msg_teni (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:15:24.589019-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_CHAT_GLOBAL" not found (this database is empty); SQL statement:
+INSERT INTO msg_chat_global (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:15:24.605412-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_KEVIN" not found (this database is empty); SQL statement:
+INSERT INTO msg_kevin (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:15:24.630617-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_TENI" not found (this database is empty); SQL statement:
+INSERT INTO msg_teni (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:15:24.654331-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_TENI" not found (this database is empty); SQL statement:
+SELECT contacto, remitente, mensaje, fechaHora FROM msg_teni [42104-232]
+2025-06-11 22:15:57.488189-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_CHAT_GLOBAL" not found (this database is empty); SQL statement:
+INSERT INTO msg_chat_global (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:15:57.517946-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_KEVIN" not found (this database is empty); SQL statement:
+INSERT INTO msg_kevin (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:15:57.533229-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_TENI" not found (this database is empty); SQL statement:
+INSERT INTO msg_teni (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:15:57.547828-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_CHAT_GLOBAL" not found (this database is empty); SQL statement:
+INSERT INTO msg_chat_global (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:15:57.576626-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_KEVIN" not found (this database is empty); SQL statement:
+INSERT INTO msg_kevin (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:15:57.601637-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_TENI" not found (this database is empty); SQL statement:
+INSERT INTO msg_teni (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:18:15.340709-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_CHAT_GLOBAL" not found (this database is empty); SQL statement:
+INSERT INTO msg_chat_global (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:18:15.390986-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_KEVIN" not found (this database is empty); SQL statement:
+INSERT INTO msg_kevin (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:18:27.924453-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_CHAT_GLOBAL" not found (this database is empty); SQL statement:
+INSERT INTO msg_chat_global (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:18:27.952753-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_KEVIN" not found (this database is empty); SQL statement:
+INSERT INTO msg_kevin (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:18:27.971580-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_TENI" not found (this database is empty); SQL statement:
+INSERT INTO msg_teni (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:18:33.491770-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_CHAT_GLOBAL" not found (this database is empty); SQL statement:
+INSERT INTO msg_chat_global (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:18:33.533275-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_KEVIN" not found (this database is empty); SQL statement:
+INSERT INTO msg_kevin (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:18:33.554612-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_TENI" not found (this database is empty); SQL statement:
+INSERT INTO msg_teni (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:18:37.869858-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_TENI" not found (this database is empty); SQL statement:
+INSERT INTO msg_teni (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:18:37.905823-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_KEVIN" not found (this database is empty); SQL statement:
+INSERT INTO msg_kevin (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:18:53.294778-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_KEVIN" not found (this database is empty); SQL statement:
+INSERT INTO msg_kevin (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:18:53.314352-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_TENI" not found (this database is empty); SQL statement:
+INSERT INTO msg_teni (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:19:06.795423-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_CHAT_GLOBAL" not found (this database is empty); SQL statement:
+INSERT INTO msg_chat_global (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:19:06.827641-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_KEVIN" not found (this database is empty); SQL statement:
+INSERT INTO msg_kevin (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:19:06.850640-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_TENI" not found (this database is empty); SQL statement:
+INSERT INTO msg_teni (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:19:35.385164-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_CHAT_GLOBAL" not found (this database is empty); SQL statement:
+INSERT INTO msg_chat_global (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:19:35.403615-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_KEVIN" not found (this database is empty); SQL statement:
+INSERT INTO msg_kevin (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:19:35.427901-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_TENI" not found (this database is empty); SQL statement:
+INSERT INTO msg_teni (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42104-232]
+2025-06-11 22:19:35.467326-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "MSG_TENI" not found (this database is empty); SQL statement:
+SELECT contacto, remitente, mensaje, fechaHora FROM msg_teni [42104-232]
+2025-06-11 22:22:39.164009-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "MSG_CHAT_GLOBAL" no encontrada
+Table "MSG_CHAT_GLOBAL" not found; SQL statement:
+INSERT INTO msg_chat_global (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42102-232]
+2025-06-11 22:22:48.240508-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "MSG_CHAT_GLOBAL" no encontrada
+Table "MSG_CHAT_GLOBAL" not found; SQL statement:
+INSERT INTO msg_chat_global (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42102-232]
+2025-06-11 22:23:20.465540-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "MSG_CHAT_GLOBAL" no encontrada
+Table "MSG_CHAT_GLOBAL" not found; SQL statement:
+INSERT INTO msg_chat_global (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42102-232]
+2025-06-11 22:23:21.343436-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "MSG_CHAT_GLOBAL" no encontrada
+Table "MSG_CHAT_GLOBAL" not found; SQL statement:
+INSERT INTO msg_chat_global (contacto, remitente, mensaje, fechaHora) VALUES (?, ?, ?, ?) [42102-232]

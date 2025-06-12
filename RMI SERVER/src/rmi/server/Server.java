@@ -36,6 +36,8 @@ public class Server extends UnicastRemoteObject implements IServer {
 
     protected Server() throws RemoteException {
         super();
+        UsuarioDAOH2 dao = new UsuarioDAOH2();
+        dao.vaciarTodasLasTablasMensajes();
         inicializarUsuarioGlobal();
         iniciarVerificadorInactividad();
     }
@@ -100,14 +102,25 @@ public class Server extends UnicastRemoteObject implements IServer {
             return "Error: El nombre de usuario no puede estar vacío.";
         }
 
+        UsuarioDAOH2 dao = new UsuarioDAOH2();
         name = name.trim();
+        dao.crearTablaSiNoExiste(name);
 
         if (USUARIO_GLOBAL.equalsIgnoreCase(name)) {
             return "Error: El nombre '" + USUARIO_GLOBAL + "' está reservado para el sistema.";
         }
 
         if (usuarios.containsKey(name)) {
-            return "Error: El usuario '" + name + "' ya está conectado.";
+            Usuario u = usuarios.get(name);
+            if (u.getConnected()) {
+                return "Error: El usuario '" + name + "' ya está conectado.";
+            } else {
+                
+                u.setConnected(true);
+                sendGlobalMessage("Chat Global", "Se reconecto: " + name);
+                u.cargarCopiaMensajes(dao.obtenerMensajes(name));
+                return "";
+            }
         }
 
         if (IP == null || IP.trim().isEmpty()) {
@@ -118,9 +131,11 @@ public class Server extends UnicastRemoteObject implements IServer {
         Usuario nuevoUsuario = new Usuario(name, IP.trim());
         usuarios.put(name, nuevoUsuario);
         ultimoLatido.put(name, System.currentTimeMillis());
-        
-       // Mensaje en consola para depurar
+
+        // Mensaje en consola para depurar
         logger.info("Usuario registrado: " + name + " desde IP: " + IP);
+
+        sendGlobalMessage("Chat Global", "Se conecto: " + name);
 
         return imprimirUsuarios();
     }
@@ -128,16 +143,29 @@ public class Server extends UnicastRemoteObject implements IServer {
     @Override
     public List<String> getConnectedUsers() throws RemoteException {
         // Devuelve una copia inmutable de las claves (nombres de usuario)
-        return new ArrayList<>(usuarios.keySet());
+        ArrayList<String> usuariosConectados = new ArrayList<>();
+        for (Usuario u : usuarios.values()) {
+            if (u.getConnected()) {
+                usuariosConectados.add(u.getName());
+            }
+        }
+        return usuariosConectados;
     }
 
     @Override
     public void sendDirectMessage(String from, String to, String message) throws RemoteException {
-        Usuario destinatario = usuarios.get(to);
         Usuario remitente = usuarios.get(from);
+        Usuario destinatario = usuarios.get(to);
+
         if (destinatario != null) {
-            remitente.sendMessage(to, from, message, LocalDateTime.now().toString());
-            destinatario.sendMessage(from, from, message, LocalDateTime.now().toString());
+            UsuarioDAOH2 dao = new UsuarioDAOH2();
+            String fecha = LocalDateTime.now().toString();
+
+            dao.insertarMensaje(from, to, from, message, fecha);
+            dao.insertarMensaje(to, from, from, message, fecha);
+
+            remitente.sendMessage(to, from, message, fecha);
+            destinatario.sendMessage(from, from, message, fecha);
         }
     }
 
@@ -145,14 +173,17 @@ public class Server extends UnicastRemoteObject implements IServer {
     public void sendGlobalMessage(String from, String message) throws RemoteException {
         String timestamp = LocalDateTime.now().toString();
         Usuario chatGlobal = usuarios.get("Chat Global");
+        UsuarioDAOH2 dao = new UsuarioDAOH2();
 
         if (chatGlobal != null) {
             chatGlobal.sendMessage("Chat Global", from, message, timestamp);
+            dao.insertarMensaje("Chat Global", "Chat Global", from, message, timestamp);
         }
 
         for (Usuario u : usuarios.values()) {
             if (!u.getName().equals("Chat Global")) {
                 u.sendMessage("Chat Global", from, message, timestamp);
+                dao.insertarMensaje(u.getName(), "Chat Global", from, message, timestamp);
             }
         }
     }
@@ -172,15 +203,14 @@ public class Server extends UnicastRemoteObject implements IServer {
 
     @Override
     public synchronized void desconectarUsuario(String name) throws RemoteException {
-        Usuario removed = null;
+        Boolean removed = false;
 
-        if (!name.equals("Chat Global")) {
-            removed = usuarios.remove(name);
-            sendGlobalMessage("Chat Global","Se desconecto a usuario "+name);
+        if (!name.equals("Chat Global") && usuarios.get(name).getConnected()) {
+            removed = true;
+            usuarios.get(name).setConnected(false);
         }
-        if (removed != null) {
-            String notif = "Sistema: " + name + " se ha desconectado.";
-            //usuarios.values().forEach(user -> user.addMessage(notif));
+        if (removed) {
+            sendGlobalMessage("Chat Global", "Se desconecto a usuario " + name);
         }
     }
 
